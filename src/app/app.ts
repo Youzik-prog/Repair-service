@@ -9,13 +9,14 @@ import { TableComponent } from './components/table/table.component';
   imports: [RouterOutlet, TableComponent],
   templateUrl: './app.html',
   styleUrl: './app.css',
-  standalone: true
+  standalone: true,
+  
 })
 export class App {
   protected readonly title = signal('Repair-service');
 
-  constructor(supabaseService: SupabaseService, orderService: OrdersService) {
+  constructor(supabaseService: SupabaseService, public orderService: OrdersService) {
     //supabaseService.getUsers();
-    orderService.getAllOrders();
+    //orderService.getAllOrders();
   }
 }

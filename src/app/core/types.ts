@@ -1,3 +1,5 @@
+import { Observable } from "rxjs";
+
 export const enum UserType {
     guest = "GUEST",
     user = "USER",
@@ -61,4 +63,13 @@ export interface Worker extends Row {
     phone?: string,
     email?: string,
     skillLevel?: number
+}
+
+export interface TableService<T> {
+    getAllRecords(): Observable<T[]>;
+    getRecordById(id: number): Observable<T | null>;
+}
+
+export type ColumnNames<T> = {
+    [K in keyof T]: string;
 }

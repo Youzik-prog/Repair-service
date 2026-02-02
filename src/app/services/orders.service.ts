@@ -1,18 +1,17 @@
 import { Injectable, OnInit } from '@angular/core';
 import { SupabaseService } from './supabase.service';
-import { Order } from '../core/types';
+import { Order, TableService } from '../core/types';
 import { filter, from, map, Observable, of } from 'rxjs';
 import { ORDERS_TABLE_NAME } from '../core/constants';
 
 @Injectable({
   providedIn: 'root',
 })
-export class OrdersService{
+export class OrdersService implements TableService<Order>{
   constructor(private supabase: SupabaseService) {
-    this.getOrderById(2).subscribe(el => console.log(el));
    }
 
-  getAllOrders() : Observable<Order[]> {
+  getAllRecords() : Observable<Order[]> {
     return from(this.supabase.client.from(ORDERS_TABLE_NAME).select("*")).pipe(
       map(response => {
       if (response.error) throw response.error;
@@ -32,8 +31,8 @@ export class OrdersService{
     )
   }
 
-  getOrderById(id: number): Observable<Order | null> {
-    return this.getAllOrders().pipe(
+  getRecordById(id: number): Observable<Order | null> {
+    return this.getAllRecords().pipe(
       map(data => data.find(order => order.id === id) ?? null)
     )
   }
