@@ -32,12 +32,12 @@ export interface Dealer extends Row {
 export interface Detail extends Row {
     name: string,
     price?: number,
-    dealerId?: number,
+    dealerId?: number | string,
 }
 
 export interface DetailForOrder extends Row {
-    detailId: number,
-    orderId: number,
+    detailId: number | string,
+    orderId: number | string,
     amount: number
 }
 
@@ -49,9 +49,9 @@ export interface Device extends Row {
 }
 
 export interface Order extends Row {
-    deviceId: number,
-    workerId?: number,
-    userId?: number,
+    deviceId: number | string,
+    workerId?: number | string,
+    userId?: number | string,
     price?: number,
     startDate?: string,
     endDate?: string
@@ -72,4 +72,12 @@ export interface TableService<T> {
 
 export type ColumnNames<T> = {
     [K in keyof T]: string;
+}
+
+export type ColumnType = 'text' | 'number' | 'email' | 'tel' | 'password' | 'date' | 'select';
+
+export interface ColumnConfig {
+    label: string,
+    type: ColumnType
+    options?: {label: string, value: any}[];
 }

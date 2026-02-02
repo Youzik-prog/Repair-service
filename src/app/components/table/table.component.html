@@ -1,2 +1,38 @@
 <p>table.component works!</p>
-<p>{{ allRecords()[0] }}</p>
+<table [formArray]="formArray">
+    <thead>
+        <tr>
+            @for (key of columnKeys(); track key) {
+                <th>{{ config()[key].label }}</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+       @for (group of formArray.controls; track group; let i = $index) {
+        <tr [formGroupName]="i">
+            @for (key of columnKeys(); track key) {
+                <td>
+                    @let col = config()[key];
+
+                    @if(col.type === 'text' || col.type === 'number' || col.type === 'email' || col.type === 'tel') {
+                        <input [type]="col.type" [formControlName]="key" min="0">
+                    }
+                    @else if (col.type === 'password') {
+                        <input type="text" [formControlName]="key">
+                    }
+                    @else if (col.type === 'date') {
+                        <input type="date" [formControlName]="key">
+                    }
+                    @else if (col.type === 'select') {
+                        <select [formControlName]="key">
+                            @for (opt of col.options; track opt.value) {
+                                <option [value]="opt.value">{{ opt.value }}</option>
+                            }
+                        </select>
+                    }
+                </td>
+            }
+        </tr>
+       }
+    </tbody>
+</table>

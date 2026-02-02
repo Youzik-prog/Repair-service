@@ -37,5 +37,14 @@ export class OrdersService implements TableService<Order>{
     )
   }
 
+  async updateRecord(id: number, order: Order) {
+    const { error } = await this.supabase.client
+    .from(ORDERS_TABLE_NAME)
+    .update(order)
+    .eq('id', id);
+
+    if(error) throw error;
+  }
+
 
 }
