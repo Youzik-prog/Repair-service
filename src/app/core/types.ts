@@ -1,15 +1,17 @@
-const enum UserType {
+export const enum UserType {
     guest = "GUEST",
     user = "USER",
     worker = "WORKER", 
     admin = "ADMIN"
 }
 
-interface Table {
+export type DeviceType = never;
+
+export interface Row {
     id: number
 }
 
-interface UsersTable extends Table {
+export interface User extends Row {
     name: string,
     password: string,
     lastName?: string,
@@ -18,42 +20,42 @@ interface UsersTable extends Table {
     type: UserType
 }
 
-interface DealersTable extends Table {
+export interface Dealer extends Row {
     name: string,
     adress?: string,
     phone?: string,
     email?: string
 }
 
-interface DetailsTable extends Table {
+export interface Detail extends Row {
     name: string,
     price?: number,
     dealerId?: number,
 }
 
-interface DetailsForOrderTable extends Table {
+export interface DetailForOrder extends Row {
     detailId: number,
     orderId: number,
     amount: number
 }
 
-interface DevicesTable extends Table {
+export interface Device extends Row {
     vendor: string,
     model?: string,
     year: number
-    type: any /* TODO */
+    type: DeviceType
 }
 
-interface OrdersTable extends Table {
+export interface Order extends Row {
     deviceId: number,
     workerId?: number,
     userId?: number,
     price?: number,
-    startDate?: Date,
-    endDate?: Date
+    startDate?: string,
+    endDate?: string
 }
 
-interface WorkersTable extends Table {
+export interface Worker extends Row {
     name: string,
     lastName?: string,
     phone?: string,

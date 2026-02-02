@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { from } from 'rxjs';
+import { SUPABASE_PUBLIC_KEY, SUPABASE_URL } from '../core/constants';
 
-const supabaseUrl = 'https://gwnuhprexigmpaxkkczc.supabase.co';
-const supabaseKey = 'sb_publishable_w-ZYBP5aa6Eu4ffKFgHjZw_ybwUCRE0';
+const supabaseUrl = SUPABASE_URL;
+const supabaseKey = SUPABASE_PUBLIC_KEY;
 const supabaseSecretKey: string | null = null;
 
 @Injectable({
