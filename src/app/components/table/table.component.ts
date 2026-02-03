@@ -5,6 +5,7 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { isRowsEqual } from '../../core/utils';
+import { set } from 'lodash';
 
 @Component({
   selector: 'app-table',
@@ -32,6 +33,8 @@ export class TableComponent<T>{
   protected formArray = new FormArray<FormGroup>([]);
 
   private cdr = inject(ChangeDetectorRef);
+
+  public isNewRowCreation = signal(false);
   
   constructor() {
     effect(() => {
@@ -63,10 +66,8 @@ export class TableComponent<T>{
     if(newRow.id) {
       id = newRow.id;
     } else {
-      id = index + 1;
+      return;
     }
-
-    console.log(this.formArray);
 
     if(!isRowsEqual(newRow, oldRow)) {
       try {
@@ -80,6 +81,53 @@ export class TableComponent<T>{
      
   }
 
-  
+  public createRow() {
+    const group = new FormGroup({});
+
+    for(const key of this.columnKeys()) {
+      const colConfig = this.config()[key];
+      
+      group.addControl(key as string, new FormControl(''));
+    }
+
+    this.formArray.push(group);
+
+    this.isNewRowCreation.set(true);
+
+    setTimeout(() => {
+      window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
+    })
+  }
+
+  public async acceptRowCreation() {
+    if(!this.isNewRowCreation())
+      return;
+
+    const lastRecord = this.formArray.at(-1).value;
+    try{
+      await this.tableService().createRecord(lastRecord);
+
+      this.isNewRowCreation.set(false);
+      console.log("Данные чота типа добавлены");   
+    } catch(error) {
+      console.log(error);
+    }
+    
+  }
+
+  public rejectRowCreation() {
+    if(this.isNewRowCreation()) {
+      this.formArray.removeAt(this.formArray.length - 1);
+    }
+    this.isNewRowCreation.set(false);
+  }
+
+  public async deleteRow(id: number) {
+    const con = confirm("Удалить запись?");
+
+    if (con) {
+      this.tableService().deleteRecord(id);
+    }
+  }
 
 }

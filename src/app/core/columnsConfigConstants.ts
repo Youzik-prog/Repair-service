@@ -1,6 +1,6 @@
 import { ColumnConfig, ColumnNames, Dealer, Detail, DetailForOrder, Device, Order, User, UserType, Worker } from "./types";
 
-const ID_COL: ColumnConfig = { label: 'ID', type: 'number' };
+const ID_COL: ColumnConfig = { label: 'ID', type: 'id' };
 const PHONE_COL: ColumnConfig = { label: 'Телефон', type: 'tel' };
 const EMAIL_COL: ColumnConfig = { label: 'Email', type: 'email' };
 

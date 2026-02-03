@@ -69,13 +69,15 @@ export interface TableService<T> {
     getAllRecords(): Observable<T[]>;
     getRecordById(id: number): Observable<T | null>;
     updateRecord(id: number, record: T): void;
+    createRecord(record: T): void,
+    deleteRecord(id: number): void
 }
 
 export type ColumnNames<T> = {
     [K in keyof T]: string;
 }
 
-export type ColumnType = 'text' | 'number' | 'email' | 'tel' | 'password' | 'date' | 'select';
+export type ColumnType = 'id' | 'text' | 'number' | 'email' | 'tel' | 'password' | 'date' | 'select';
 
 export interface ColumnConfig {
     label: string,

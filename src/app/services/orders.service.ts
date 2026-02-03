@@ -43,19 +43,48 @@ export class OrdersService implements TableService<Order>{
     if (!isOrder(order))
       throw new Error('"order" parameter is not "Order" type!');
 
-    const orderSnakeCase = toSnake(order);
-
-    console.log(orderSnakeCase);
-    
-    delete orderSnakeCase['id'];
+    const newRecord = this.validateRecord(order);
 
     const { error } = await this.supabase.client
     .from(ORDERS_TABLE_NAME)
-    .update(orderSnakeCase)
+    .update(newRecord)
     .eq('id', id);
 
     if(error) throw error;
   }
 
+  async createRecord(order: Order) {
+    if (!isOrder(order))
+      throw new Error('"order" parameter is not "Order" type!');
+
+    const newRecord = this.validateRecord(order);
+
+    const { error } = await this.supabase.client
+    .from(ORDERS_TABLE_NAME)
+    .insert(newRecord);
+
+    if(error) throw error;
+  }
+
+  async deleteRecord(id: Number) {
+    const { error } = await this.supabase.client
+    .from(ORDERS_TABLE_NAME)
+    .delete()
+    .eq('id', id);
+
+    if(error) throw error;
+  }
+
+  private validateRecord(order: Order): object {
+    return {
+      device_id: order.deviceId,
+      worker_id: order.workerId || null,
+      user_id: order.userId || null,
+      price: order.price || null,
+      start_date: order.startDate || null,
+      end_date: order.endDate || null
+    }
+    
+  }
 
 }
