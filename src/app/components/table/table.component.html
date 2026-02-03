@@ -15,16 +15,16 @@
                     @let col = config()[key];
 
                     @if(col.type === 'text' || col.type === 'number' || col.type === 'email' || col.type === 'tel') {
-                        <input [type]="col.type" [formControlName]="key" min="0">
+                        <input [type]="col.type" [formControlName]="key" min="0" step="0.01" (blur)="updateRow(i)">
                     }
                     @else if (col.type === 'password') {
-                        <input type="text" [formControlName]="key">
+                        <input type="text" [formControlName]="key" (blur)="updateRow(i)">
                     }
                     @else if (col.type === 'date') {
-                        <input type="date" [formControlName]="key">
+                        <input type="date" [formControlName]="key" (input)="updateRow(i)">
                     }
                     @else if (col.type === 'select') {
-                        <select [formControlName]="key">
+                        <select [formControlName]="key" (input)="updateRow(i)">
                             @for (opt of col.options; track opt.value) {
                                 <option [value]="opt.value">{{ opt.value }}</option>
                             }

@@ -68,6 +68,7 @@ export interface Worker extends Row {
 export interface TableService<T> {
     getAllRecords(): Observable<T[]>;
     getRecordById(id: number): Observable<T | null>;
+    updateRecord(id: number, record: T): void;
 }
 
 export type ColumnNames<T> = {

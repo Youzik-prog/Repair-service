@@ -4,6 +4,7 @@ import { Observable, switchMap } from 'rxjs';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { isRowsEqual } from '../../core/utils';
 
 @Component({
   selector: 'app-table',
@@ -54,12 +55,31 @@ export class TableComponent<T>{
     this.cdr.markForCheck();
   }
 
-  private saveRow(index: number) {
-    const rowData = this.formArray.at(index).value;
-    const originalId = (this.allRecords()[index] as any).id;
+  public async updateRow(index: number) {
+    const newRow = this.formArray.at(index).value as any;
+    const oldRow = this.allRecords()[index];
 
-    console.log("Данные чота типа сохранены");
-    
+    let id;
+    if(newRow.id) {
+      id = newRow.id;
+    } else {
+      id = index + 1;
+    }
+
+    console.log(this.formArray);
+
+    if(!isRowsEqual(newRow, oldRow)) {
+      try {
+        await this.tableService().updateRecord(id, newRow);
+
+        console.log("Данные чота типа сохранены");   
+      } catch(error) {
+        console.log(error)
+      }
+    }
+     
   }
+
+  
 
 }
