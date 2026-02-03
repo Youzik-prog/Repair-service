@@ -1,11 +1,12 @@
 import { ChangeDetectorRef, Component, computed, effect, inject, input, signal, Signal } from '@angular/core';
 import { ColumnConfig, ColumnNames, TableService } from '../../core/types';
-import { Observable, switchMap } from 'rxjs';
+import { merge, Observable, of, switchMap } from 'rxjs';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { isRowsEqual } from '../../core/utils';
 import { set } from 'lodash';
+import { RecordValidationError } from '../../core/errors';
 
 @Component({
   selector: 'app-table',
@@ -21,7 +22,14 @@ export class TableComponent<T>{
 
   public allRecords: Signal<T[]> = toSignal(
     toObservable(this.tableService).pipe(
-      switchMap(service => service.getAllRecords())
+      switchMap((service) => {
+        return merge(
+          of(null),
+          service.tableChanges$
+        ).pipe(
+          switchMap(() => service.getAllRecords())
+        )
+      })
     ),
     { initialValue: [] }
   );
@@ -75,7 +83,8 @@ export class TableComponent<T>{
 
         console.log("Данные чота типа сохранены");   
       } catch(error) {
-        console.log(error)
+        this.initForm(this.allRecords());
+        this.showErrorMessage(error);
       }
     }
      
@@ -110,7 +119,8 @@ export class TableComponent<T>{
       this.isNewRowCreation.set(false);
       console.log("Данные чота типа добавлены");   
     } catch(error) {
-      console.log(error);
+      this.initForm(this.allRecords());
+      this.showErrorMessage(error);
     }
     
   }
@@ -126,7 +136,19 @@ export class TableComponent<T>{
     const con = confirm("Удалить запись?");
 
     if (con) {
-      this.tableService().deleteRecord(id);
+      try {
+       await this.tableService().deleteRecord(id);
+      } catch(error) {
+        this.showErrorMessage(error);
+      }
+    }
+  }
+
+  private showErrorMessage(error: unknown): void {
+    if(error instanceof RecordValidationError) {
+      alert("Неправильное заполнение полей!\n" + error.message);
+    } else {
+      console.log(error);
     }
   }
 

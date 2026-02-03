@@ -6,7 +6,6 @@ import { SUPABASE_PUBLIC_KEY, SUPABASE_URL } from '../core/constants';
 const supabaseUrl = SUPABASE_URL;
 const supabaseKey = SUPABASE_PUBLIC_KEY;
 const supabaseSecretKey: string | null = null
-
 @Injectable({
   providedIn: 'root',
 })

@@ -1,15 +1,19 @@
 import { Injectable, OnInit } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { Order, TableService } from '../core/types';
-import { filter, from, map, Observable, of } from 'rxjs';
+import { filter, from, map, Observable, of, Subject } from 'rxjs';
 import { ORDERS_TABLE_NAME } from '../core/constants';
 import { toCamel, toSnake } from '../core/utils';
 import { isOrder } from '../core/typeguards';
+import { RecordValidationError } from '../core/errors';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrdersService implements TableService<Order>{
+
+  tableChanges$: Subject<void> = new Subject();
+
   constructor(private supabase: SupabaseService) {
    }
 
@@ -51,6 +55,8 @@ export class OrdersService implements TableService<Order>{
     .eq('id', id);
 
     if(error) throw error;
+    
+    this.tableChanges$.next();
   }
 
   async createRecord(order: Order) {
@@ -62,8 +68,10 @@ export class OrdersService implements TableService<Order>{
     const { error } = await this.supabase.client
     .from(ORDERS_TABLE_NAME)
     .insert(newRecord);
-
+    
     if(error) throw error;
+    
+    this.tableChanges$.next();
   }
 
   async deleteRecord(id: Number) {
@@ -73,9 +81,15 @@ export class OrdersService implements TableService<Order>{
     .eq('id', id);
 
     if(error) throw error;
+    
+    this.tableChanges$.next();
   }
 
   private validateRecord(order: Order): object {
+    if(!order.deviceId) {
+      throw new RecordValidationError("Не заполнено поле идентификатора устройства!");
+    }
+
     return {
       device_id: order.deviceId,
       worker_id: order.workerId || null,
@@ -84,7 +98,6 @@ export class OrdersService implements TableService<Order>{
       start_date: order.startDate || null,
       end_date: order.endDate || null
     }
-    
   }
 
 }

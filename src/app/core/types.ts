@@ -1,4 +1,4 @@
-import { Observable } from "rxjs";
+import { Observable, Subject } from "rxjs";
 
 export const enum UserType {
     guest = "GUEST",
@@ -66,6 +66,7 @@ export interface Worker extends Row {
 }
 
 export interface TableService<T> {
+    tableChanges$: Subject<void>,
     getAllRecords(): Observable<T[]>;
     getRecordById(id: number): Observable<T | null>;
     updateRecord(id: number, record: T): void;
