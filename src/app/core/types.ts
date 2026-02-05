@@ -1,10 +1,11 @@
+import { AbstractControl, AsyncValidatorFn, Validator, ValidatorFn } from "@angular/forms";
 import { Observable, Subject } from "rxjs";
 
 export const enum UserType {
-    guest = "GUEST",
-    user = "USER",
-    worker = "WORKER", 
-    admin = "ADMIN"
+    guest = "guest",
+    user = "user",
+    worker = "worker", 
+    admin = "admin"
 }
 
 export type DeviceType = never;
@@ -66,6 +67,7 @@ export interface Worker extends Row {
 }
 
 export interface TableService<T> {
+    tableName: string,
     tableChanges$: Subject<void>,
     getAllRecords(): Observable<T[]>;
     getRecordById(id: number): Observable<T | null>;
@@ -82,6 +84,7 @@ export type ColumnType = 'id' | 'text' | 'number' | 'email' | 'tel' | 'password'
 
 export interface ColumnConfig {
     label: string,
-    type: ColumnType
+    type: ColumnType,
+    validators?: ValidatorFn | ValidatorFn[],
     options?: {label: string, value: any}[];
 }

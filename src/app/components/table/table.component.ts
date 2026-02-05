@@ -5,7 +5,6 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { isRowsEqual } from '../../core/utils';
-import { set } from 'lodash';
 import { RecordValidationError } from '../../core/errors';
 
 @Component({
@@ -24,7 +23,7 @@ export class TableComponent<T>{
     toObservable(this.tableService).pipe(
       switchMap((service) => {
         return merge(
-          of(null),
+          of(null), // TODO Я НЕ ПОНИМАЮ ЭТУ ХУЙНЮ
           service.tableChanges$
         ).pipe(
           switchMap(() => service.getAllRecords())
@@ -57,7 +56,14 @@ export class TableComponent<T>{
       const group = new FormGroup({});
 
       for(let key of this.columnKeys()) {
-        group.addControl(key as string, new FormControl(item[key]));
+        const config = this.config()[key];
+
+        const control = new FormControl(item[key], {
+          validators: config.validators, 
+          //asyncValidators: config.asyncValidatorFactory,
+          updateOn: 'change'});
+
+        group.addControl(key as string, control);
       }
 
       this.formArray.push(group);
@@ -67,6 +73,9 @@ export class TableComponent<T>{
   }
 
   public async updateRow(index: number) {
+    if(!this.checkRowValidators(index))
+      return;
+
     const newRow = this.formArray.at(index).value as any;
     const oldRow = this.allRecords()[index];
 
@@ -95,8 +104,13 @@ export class TableComponent<T>{
 
     for(const key of this.columnKeys()) {
       const colConfig = this.config()[key];
+
+      const control = new FormControl('', {
+          validators: colConfig.validators, 
+          //asyncValidators: config.asyncValidatorFactory,
+          updateOn: 'change'});
       
-      group.addControl(key as string, new FormControl(''));
+      group.addControl(key as string, control);
     }
 
     this.formArray.push(group);
@@ -109,17 +123,15 @@ export class TableComponent<T>{
   }
 
   public async acceptRowCreation() {
-    if(!this.isNewRowCreation())
+    if(!this.isNewRowCreation() || !this.checkRowValidators(this.formArray.length - 1))
       return;
 
     const lastRecord = this.formArray.at(-1).value;
     try{
       await this.tableService().createRecord(lastRecord);
-
       this.isNewRowCreation.set(false);
-      console.log("Данные чота типа добавлены");   
+      console.log("Данные чота типа добавлены");
     } catch(error) {
-      this.initForm(this.allRecords());
       this.showErrorMessage(error);
     }
     
@@ -147,9 +159,21 @@ export class TableComponent<T>{
   private showErrorMessage(error: unknown): void {
     if(error instanceof RecordValidationError) {
       alert("Неправильное заполнение полей!\n" + error.message);
-    } else {
-      console.log(error);
+    } else if((error as any).code === '23503') {
+      alert('Введён несуществующий идентификатор!');
     }
+    else {
+      console.error(error);
+    }
+  }
+
+  private checkRowValidators(index: number): boolean {
+    const rowGroup = this.formArray.at(index);
+
+    if(rowGroup.invalid)
+      return false;
+    else
+      return true;
   }
 
 }

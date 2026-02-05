@@ -3,11 +3,13 @@ import { RouterOutlet } from '@angular/router';
 import { SupabaseService } from './services/supabase.service';
 import { OrdersService } from './services/orders.service';
 import { TableComponent } from './components/table/table.component';
-import { ORDERS_CONFIG } from './core/columnsConfigConstants';
+import { ORDERS_CONFIG, USERS_CONFIG } from './core/columnsConfigs';
+import { UsersService } from './services/users.service';
+import { SignupComponent } from "./components/signup/signup.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, TableComponent],
+  imports: [RouterOutlet, TableComponent, SignupComponent],
   templateUrl: './app.html',
   styleUrl: './app.css',
   standalone: true,
@@ -17,7 +19,7 @@ export class App {
 
   public config = ORDERS_CONFIG;
 
-  constructor(supabaseService: SupabaseService, public orderService: OrdersService) {
+  constructor(supabaseService: SupabaseService, public someService: OrdersService) {
     //supabaseService.getUsers();
     //orderService.getAllOrders();
   }
