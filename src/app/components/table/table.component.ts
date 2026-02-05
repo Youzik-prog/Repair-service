@@ -4,7 +4,7 @@ import { merge, Observable, of, switchMap } from 'rxjs';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { isRowsEqual } from '../../core/utils';
+import { isRowsEqual, showErrorMessage } from '../../core/utils';
 import { RecordValidationError } from '../../core/errors';
 
 @Component({
@@ -60,7 +60,6 @@ export class TableComponent<T>{
 
         const control = new FormControl(item[key], {
           validators: config.validators, 
-          //asyncValidators: config.asyncValidatorFactory,
           updateOn: 'change'});
 
         group.addControl(key as string, control);
@@ -93,7 +92,7 @@ export class TableComponent<T>{
         console.log("Данные чота типа сохранены");   
       } catch(error) {
         this.initForm(this.allRecords());
-        this.showErrorMessage(error);
+        showErrorMessage(error);
       }
     }
      
@@ -132,7 +131,7 @@ export class TableComponent<T>{
       this.isNewRowCreation.set(false);
       console.log("Данные чота типа добавлены");
     } catch(error) {
-      this.showErrorMessage(error);
+      showErrorMessage(error);
     }
     
   }
@@ -151,19 +150,8 @@ export class TableComponent<T>{
       try {
        await this.tableService().deleteRecord(id);
       } catch(error) {
-        this.showErrorMessage(error);
+        showErrorMessage(error);
       }
-    }
-  }
-
-  private showErrorMessage(error: unknown): void {
-    if(error instanceof RecordValidationError) {
-      alert("Неправильное заполнение полей!\n" + error.message);
-    } else if((error as any).code === '23503') {
-      alert('Введён несуществующий идентификатор!');
-    }
-    else {
-      console.error(error);
     }
   }
 

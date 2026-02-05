@@ -1,6 +1,5 @@
 import { Validators } from "@angular/forms";
 import { ColumnConfig, ColumnNames, Dealer, Detail, DetailForOrder, Device, Order, TableService, User, UserType, Worker } from "./types";
-import { foreignKeyValidator } from "./utils";
 import { UsersService } from "../services/users.service";
 
 const ID_COL: ColumnConfig = { label: 'ID', type: 'id' };
