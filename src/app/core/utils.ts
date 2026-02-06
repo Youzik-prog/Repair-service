@@ -1,8 +1,6 @@
 import _ from "lodash";
 import { RecordValidationError } from "./errors";
-import { Order, TableService, User } from "./types";
-import { AbstractControl, AsyncValidatorFn, ValidationErrors } from "@angular/forms";
-import { catchError, map, Observable, of, switchMap, timer } from "rxjs";
+import { Order, User } from "./types";
 import { isSupabaseError } from "./typeguards";
 
 export const toCamel = (obj: object) => _.mapKeys(obj, (v, k) => _.camelCase(k));
@@ -55,43 +53,3 @@ export function showErrorMessage(error: unknown): void {
     }
   }
 
-export const validateOrder = function(order: Order): object {
-  if(order.startDate && order.endDate) {
-    if(new Date(order.startDate) > new Date(order.endDate)) {
-      throw new RecordValidationError("Дата начала ремонта не может быть позднее даты окончания!");
-    }
-  }
-
-  return {
-    device_id: order.deviceId,
-    worker_id: order.workerId || null,
-    user_id: order.userId || null,
-    price: order.price || null,
-    start_date: order.startDate || null,
-    end_date: order.endDate || null
-  }
-}
-
-export const validateUser = function(user: User): object {
-  if(!user.name) {
-    throw new RecordValidationError("Не заполнено имя пользователя!");
-  } 
-  else if(!user.password) {
-    throw new RecordValidationError("Не заполнен пароль!");
-  } 
-  else if(!user.email && !user.phone) {
-    throw new RecordValidationError("Нужно заполнить номер телефона или электронную почту!");
-  }
-  else if(!user.type) {
-    throw new RecordValidationError("Не заполнен тип пользователя!");
-  }
-
-  return {
-    name: user.name,
-    password: user.password,
-    last_name: user.lastName || null,
-    email: user.email || null,
-    phone: user.phone || null,
-    type: user.type
-  }
-}

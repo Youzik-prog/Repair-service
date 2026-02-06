@@ -45,8 +45,12 @@ export interface DetailForOrder extends Row {
 export interface Device extends Row {
     vendor: string,
     model?: string,
-    year: number
-    type: DeviceType
+    year?: number
+    deviceTypeId?: Number
+}
+
+export interface Devices_types extends Row {
+    name: string
 }
 
 export interface Order extends Row {

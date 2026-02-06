@@ -66,8 +66,13 @@ export const DEVICES_CONFIG: Record<string, ColumnConfig> = {
     vendor: { label: 'Производитель', type: 'text', validators: [Validators.required, Validators.maxLength(50)] },
     model: { label: 'Модель', type: 'text', validators: Validators.maxLength(100) },
     year: { label: 'Год производства', type: 'number', validators: Validators.pattern(year)},
-    type: { label: 'Тип устройства', type: 'text' } // TODO Можно заменить на select
+    deviceTypeId: { label: 'Тип устройства', type: 'text' }
 };
+
+export const DEVICES_TYPES_CONFIG: Record<string, ColumnConfig> = {
+    id: ID_COL,
+    name: { label: 'Название', type: 'text', validators: [Validators.required, Validators.maxLength(50)]}
+}
 
 export const WORKERS_CONFIG: Record<string, ColumnConfig> = {
     id: ID_COL,

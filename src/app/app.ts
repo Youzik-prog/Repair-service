@@ -3,13 +3,15 @@ import { RouterOutlet } from '@angular/router';
 import { SupabaseService } from './services/supabase.service';
 import { OrdersService } from './services/orders.service';
 import { TableComponent } from './components/table/table.component';
-import { ORDERS_CONFIG, USERS_CONFIG } from './core/columnsConfigs';
+import { DEALERS_CONFIG, ORDERS_CONFIG, USERS_CONFIG } from './core/columnsConfigs';
 import { UsersService } from './services/users.service';
-import { SignupComponent } from "./components/signup/signup.component";
+import { FormComponent } from "./components/form/form.component";
+import { DealersService } from './services/dealers.service';
+import { LoginComponent } from "./components/login/login.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, TableComponent, SignupComponent],
+  imports: [RouterOutlet, TableComponent, FormComponent, LoginComponent],
   templateUrl: './app.html',
   styleUrl: './app.css',
   standalone: true,
@@ -17,9 +19,9 @@ import { SignupComponent } from "./components/signup/signup.component";
 export class App {
   protected readonly title = signal('Repair-service');
 
-  public config = ORDERS_CONFIG;
+  public config = USERS_CONFIG;
 
-  constructor(supabaseService: SupabaseService, public someService: OrdersService) {
+  constructor(supabaseService: SupabaseService, public someService: UsersService) {
     //supabaseService.getUsers();
     //orderService.getAllOrders();
   }

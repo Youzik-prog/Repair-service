@@ -1,0 +1,23 @@
+<form [formGroup]="form" (ngSubmit)="onSignUp()">
+    <h2>Добавить новую запись</h2>
+
+    @for (key of columnKeys(); track key) {
+        @let con = config()[key];
+
+        @if (con.type === 'select') {
+            <label [htmlFor]="key">{{ con.label }}</label>
+            <select [id]="key" [formControlName]="key">
+                @for (opt of con.options; track opt.value) {
+                    <option [value]="opt.value">{{ opt.value }}</option>
+                }
+            </select>
+        }
+        @else {
+            <label [htmlFor]="key">{{ con.label }}</label>
+            <input [type]="con.type" [id]="key" [formControlName]="key">
+        }
+    }
+
+    <button type="submit" [disabled]="form.invalid">Добавить запись</button>
+    
+</form>
