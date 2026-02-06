@@ -2,13 +2,14 @@ import { Validators } from "@angular/forms";
 import { ColumnConfig, ColumnNames, Dealer, Detail, DetailForOrder, Device, Order, TableService, User, UserType, Worker } from "./types";
 import { UsersService } from "../services/users.service";
 
-const ID_COL: ColumnConfig = { label: 'ID', type: 'id' };
-const PHONE_COL: ColumnConfig = { label: 'Телефон', type: 'tel', validators: Validators.maxLength(20) };
-const EMAIL_COL: ColumnConfig = { label: 'Email', type: 'email', validators: [Validators.email, Validators.maxLength(25)] };
-
 const positiveInt = /^\d{1,9}$/;
 const money = /^\d+([.,]\d{1,2})?$/;
 const year = /^\d{1,4}$/;
+const phone = /^\+\d+$/;
+
+const ID_COL: ColumnConfig = { label: 'ID', type: 'id' };
+const PHONE_COL: ColumnConfig = { label: 'Телефон', type: 'tel', validators: [Validators.pattern(phone), Validators.maxLength(20)] };
+const EMAIL_COL: ColumnConfig = { label: 'Email', type: 'email', validators: [Validators.email, Validators.maxLength(25)] };
 
 export const ORDERS_CONFIG: Record<string, ColumnConfig> = {
     id: ID_COL,

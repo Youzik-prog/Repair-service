@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { USERS_CONFIG } from '../../core/columnsConfigs';
 
 @Component({
   selector: 'app-login',
@@ -8,8 +9,22 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
-  form = new FormGroup({
-    
 
+  config = USERS_CONFIG;
+
+  loginForm = new FormGroup({
+    login: new FormControl('', {
+      validators: Validators.maxLength(25),
+      updateOn: 'change'
+    }),
+    password: new FormControl('', {
+      validators: this.config['password'].validators,
+      updateOn: 'change'
+    })
   });
+
+  loginAdmin() {
+    
+  }
+
 }
