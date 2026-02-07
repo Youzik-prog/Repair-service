@@ -5,6 +5,7 @@ import { USERS_TABLE_NAME } from '../core/constants';
 import { BaseTableService } from './base-table.service';
 import { RecordValidationError } from '../core/errors';
 import { AuthError } from '@supabase/supabase-js';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +19,7 @@ export class UsersService extends BaseTableService<User>{
 
     const validUser: any = this.validateRecord(user);
 
-     const { data, error } = await this.supabase.client.rpc('create_full_user', {
+     const { data, error } = await this.supabase.client.rpc('update_full_user', {
       user_email: validUser.email,
       user_password: validUser.password,
       user_name: validUser.name,
@@ -36,6 +37,48 @@ export class UsersService extends BaseTableService<User>{
      return data;
     
    }
+
+  override async updateRecord(id: number, user: User): Promise<void> {
+    const validUser: any = this.validateRecord(user);
+    validUser.user_uuid = user.userUuid;
+
+    const { error } = await this.supabase.client.rpc('update_full_user', {
+      target_user_id: validUser.user_uuid,
+      user_email: validUser.email,
+      user_password: validUser.password,
+      user_name: validUser.name,
+      user_last_name: validUser.last_name,
+      user_phone: validUser.phone,
+      user_type: validUser.type
+    });
+    
+    if (error) {
+      console.error(error);
+      throw new AuthError("Ошибка при обновлении пользователя");
+     }
+
+     this.tableChanges$.next();
+  }
+
+  override async deleteRecord(id: number): Promise<void> {
+    const user = await firstValueFrom(this.getRecordById(id));
+
+    if (!user)
+      throw new Error("Пользователь не найден");
+
+    const uuid = user.userUuid;
+
+    const { error } = await this.supabase.client.rpc('delete_full_user', {
+      target_user_id: uuid
+    });
+
+    if (error){
+      console.error('Ошибка при удалении пользователя:', error);
+      throw error;
+    }
+
+    this.tableChanges$.next();
+  }
 
   protected toDomain(row: any): User {
     return {
