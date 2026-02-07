@@ -4,6 +4,7 @@ import { SupabaseService } from './supabase.service';
 import { USERS_TABLE_NAME } from '../core/constants';
 import { BaseTableService } from './base-table.service';
 import { RecordValidationError } from '../core/errors';
+import { AuthError } from '@supabase/supabase-js';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,29 @@ import { RecordValidationError } from '../core/errors';
 export class UsersService extends BaseTableService<User>{
   constructor(supabase: SupabaseService) {
     super(supabase, USERS_TABLE_NAME);
+   }
+
+   override async createRecord(user: User): Promise<void> {
+
+    const validUser: any = this.validateRecord(user);
+
+     const { data, error } = await this.supabase.client.rpc('create_full_user', {
+      user_email: validUser.email,
+      user_password: validUser.password,
+      user_name: validUser.name,
+      user_last_name: validUser.last_name,
+      user_phone: validUser.phone,
+      user_type: validUser.type || 'guest'
+     });
+
+     if (error) {
+      console.error(error);
+      throw new AuthError("Ошибка при регистрации пользователя");
+     }
+
+     this.tableChanges$.next();
+     return data;
+    
    }
 
   protected toDomain(row: any): User {
@@ -21,7 +45,8 @@ export class UsersService extends BaseTableService<User>{
       lastName: row.last_name,
       email: row.email,
       phone: row.phone,
-      type: row.type
+      type: row.type,
+      userUuid: row.user_uuid
     };
   }
 
@@ -31,7 +56,7 @@ export class UsersService extends BaseTableService<User>{
   } 
   else if(!user.password) {
     throw new RecordValidationError("Не заполнен пароль!");
-  } 
+  }
   else if(!user.email && !user.phone) {
     throw new RecordValidationError("Нужно заполнить номер телефона или электронную почту!");
   }
@@ -41,7 +66,7 @@ export class UsersService extends BaseTableService<User>{
 
   return {
     name: user.name,
-    password: user.password,
+    password: user.password || null,
     last_name: user.lastName || null,
     email: user.email || null,
     phone: user.phone || null,

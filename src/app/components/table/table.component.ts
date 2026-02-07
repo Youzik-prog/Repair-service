@@ -33,7 +33,7 @@ export class TableComponent<T>{
     { initialValue: [] }
   );
 
-  protected readonly columnKeys = computed(() => Object.keys(this.config()) as Extract<keyof T, string>[]);
+  protected readonly columnKeys = computed(() => Object.keys(this.config()) as ColumnNames<T>[]);
 
   private defaultTableRowsAmount: number = 10;
 

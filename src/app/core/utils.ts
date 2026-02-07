@@ -2,6 +2,7 @@ import _ from "lodash";
 import { RecordValidationError } from "./errors";
 import { Order, User } from "./types";
 import { isSupabaseError } from "./typeguards";
+import { AuthError } from "@supabase/supabase-js";
 
 export const toCamel = (obj: object) => _.mapKeys(obj, (v, k) => _.camelCase(k));
 export const toSnake = (obj: object) => _.mapKeys(obj, (v, k) => _.snakeCase(k));
@@ -32,8 +33,11 @@ export const isRowsEqual = function<T>(row1: T,row2: T): boolean {
 export function showErrorMessage(error: unknown): void {
     if(error instanceof RecordValidationError) {
       alert("Неправильное заполнение полей!\n" + error.message);
-    } else if(isSupabaseError(error)) {
-
+    } 
+    else if(error instanceof AuthError) {
+      alert(`Ошибка авториазации! ${error.message}`);
+    }
+    else if(isSupabaseError(error)) {
       if(error.code === '23503') {
         alert('Введён несуществующий идентификатор!');
       } else if(error.code === '23505') {

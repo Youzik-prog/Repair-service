@@ -8,6 +8,7 @@ import { UsersService } from './services/users.service';
 import { FormComponent } from "./components/form/form.component";
 import { DealersService } from './services/dealers.service';
 import { LoginComponent } from "./components/login/login.component";
+import { UserType } from './core/types';
 
 @Component({
   selector: 'app-root',
@@ -22,6 +23,7 @@ export class App {
   public config = USERS_CONFIG;
 
   constructor(supabaseService: SupabaseService, public someService: UsersService) {
+    // someService.createRecord({id: 123, userUuid: 'hui', name: 'Ильюха', lastName: 'Монеси', phone:'+375384932890', type: UserType.worker, password:'12345Ильюха Монеси'})
     //supabaseService.getUsers();
     //orderService.getAllOrders();
   }

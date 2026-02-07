@@ -20,7 +20,8 @@ export interface User extends Row {
     lastName?: string,
     email?: string,
     phone?: string,
-    type: UserType
+    type: UserType,
+    userUuid: string,
 }
 
 export interface Dealer extends Row {
@@ -75,16 +76,16 @@ export interface TableService<T> {
     tableChanges$: Subject<void>,
     getAllRecords(): Observable<T[]>;
     getRecordById(id: number): Observable<T | null>;
+    getRecordsByColumn(column: ColumnNames<T>, value: string): Observable<T[]>;
     updateRecord(id: number, record: T): void;
     createRecord(record: T): void,
     deleteRecord(id: number): void
 }
 
-export type ColumnNames<T> = {
-    [K in keyof T]: string;
-}
+export type ColumnNames<T> = Extract<keyof T, string>;
 
-export type ColumnType = 'id' | 'text' | 'number' | 'email' | 'tel' | 'password' | 'date' | 'select';
+
+export type ColumnType = 'id' | 'uuid' | 'text' | 'number' | 'email' | 'tel' | 'password' | 'date' | 'select';
 
 export interface ColumnConfig {
     label: string,

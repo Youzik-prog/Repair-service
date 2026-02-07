@@ -14,14 +14,14 @@
                 <td>
                     @let col = config()[key];
                     
-                    @if(col.type === 'id') {
+                    @if(col.type === 'id' || col.type === 'uuid') {
                         <span>{{ group.value[key] }}</span>
                     }
                     @if(col.type === 'text' || col.type === 'number' || col.type === 'email' || col.type === 'tel') {
                         <input [type]="col.type" [formControlName]="key" min="0" (blur)="updateRow(i)" (keydown.enter)="updateRow(i)">
                     }
                     @else if (col.type === 'password') {
-                        <input type="text" [formControlName]="key" (blur)="updateRow(i)" (keydown.enter)="updateRow(i)">
+                        <input type="password" [formControlName]="key" (blur)="updateRow(i)" (keydown.enter)="updateRow(i)">
                     }
                     @else if (col.type === 'date') {
                         <input type="date" [formControlName]="key" (input)="updateRow(i)">

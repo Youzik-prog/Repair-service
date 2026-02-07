@@ -1,5 +1,5 @@
 import { Validators } from "@angular/forms";
-import { ColumnConfig, ColumnNames, Dealer, Detail, DetailForOrder, Device, Order, TableService, User, UserType, Worker } from "./types";
+import { ColumnConfig, Dealer, Detail, DetailForOrder, Device, Order, TableService, User, UserType, Worker } from "./types";
 import { UsersService } from "../services/users.service";
 
 const positiveInt = /^\d{1,9}$/;
@@ -37,7 +37,8 @@ export const USERS_CONFIG: Record<string, ColumnConfig> = {
             { label: 'Работник', value: UserType.worker },
             { label: 'Админ', value: UserType.admin },
         ]
-    }
+    },
+    userUuid: {label: "Уникальный идентификатор", type: 'uuid'}
 };
 
 export const DEALERS_CONFIG: Record<string, ColumnConfig> = {

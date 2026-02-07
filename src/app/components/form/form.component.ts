@@ -2,7 +2,7 @@ import { Component, computed, input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UsersService } from '../../services/users.service';
 import { showErrorMessage } from '../../core/utils';
-import { ColumnConfig, TableService, User, UserType } from '../../core/types';
+import { ColumnConfig, ColumnNames, TableService, User, UserType } from '../../core/types';
 
 @Component({
   selector: 'app-form',
@@ -16,7 +16,7 @@ export class FormComponent<T> implements OnInit {
 
   config = input.required<Record<keyof T, ColumnConfig>>();
 
-  columnKeys = computed(() => Object.keys(this.config()).filter(key => key !== 'id') as Extract<keyof T, string>[] );
+  columnKeys = computed(() => Object.keys(this.config()).filter(key => key !== 'id') as ColumnNames<T>[] );
 
   protected form = new FormGroup({});
 

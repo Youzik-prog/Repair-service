@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { from, map, Observable, Subject } from 'rxjs';
-import { TableService } from '../core/types';
+import { ColumnNames, TableService } from '../core/types';
 
 @Injectable({
   providedIn: 'root',
@@ -39,6 +39,19 @@ export abstract class BaseTableService<T> implements TableService<T> {
     ).pipe(
       map(response => response.data ? this.toDomain(response.data) : null)
     );
+  }
+
+  getRecordsByColumn(column: ColumnNames<T>, value: any): Observable<T[]> {
+    return from(this.supabase.client
+      .from(this.tableName)
+      .select('*')
+      .eq(column, value)
+    ).pipe(
+        map(response => {
+        if (response.error) throw response.error;
+        return (response.data || []).map(row => this.toDomain(row));
+      })
+      )
   }
 
   async updateRecord(id: number, record: T) {

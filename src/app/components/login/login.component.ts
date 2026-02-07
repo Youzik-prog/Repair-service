@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { USERS_CONFIG } from '../../core/columnsConfigs';
+import { AuthService } from '../../services/auth.service';
+import { showErrorMessage } from '../../core/utils';
 
 @Component({
   selector: 'app-login',
@@ -10,11 +12,15 @@ import { USERS_CONFIG } from '../../core/columnsConfigs';
 })
 export class LoginComponent {
 
+  private authService = inject(AuthService);
+
+  private loginPattern = /^(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+|^\+\d+)$/;
+
   config = USERS_CONFIG;
 
   loginForm = new FormGroup({
     login: new FormControl('', {
-      validators: Validators.maxLength(25),
+      validators: [Validators.required, Validators.pattern(this.loginPattern), Validators.maxLength(25)],
       updateOn: 'change'
     }),
     password: new FormControl('', {
@@ -23,7 +29,19 @@ export class LoginComponent {
     })
   });
 
-  loginAdmin() {
+  async loginAdmin() {
+    if(this.loginForm.invalid) return;
+
+    const { login, password} = this.loginForm.value;
+    
+    try {
+      await this.authService.login(login!, password!);
+
+      console.log("Успешный логин!");
+    } catch(error) {
+      showErrorMessage(error)
+    }
+
     
   }
 
