@@ -1,6 +1,6 @@
-import { ChangeDetectorRef, Component, computed, effect, inject, input, signal, Signal } from '@angular/core';
+import { ChangeDetectorRef, Component, computed, effect, inject, Injector, input, signal, Signal } from '@angular/core';
 import { ColumnConfig, ColumnNames, TableService } from '../../core/types';
-import { merge, Observable, of, switchMap } from 'rxjs';
+import { combineLatest, merge, Observable, of, switchMap } from 'rxjs';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -15,22 +15,35 @@ import { RecordValidationError } from '../../core/errors';
   standalone: true,
 })
 export class TableComponent<T>{
+
+  private injector = inject(Injector);
+
   public tableService = input.required<TableService<T>>();
 
   public config = input.required<Record<keyof T, ColumnConfig>>();
 
+  public sortState = signal<{ sortBy: ColumnNames<T> | null, ascending: boolean}>({
+    sortBy: null,
+    ascending: true
+  });
+
   public allRecords: Signal<T[]> = toSignal(
     toObservable(this.tableService).pipe(
       switchMap((service) => {
-        return merge(
-          of(null), // TODO Я НЕ ПОНИМАЮ ЭТУ ХУЙНЮ
-          service.tableChanges$
-        ).pipe(
-          switchMap(() => service.getAllRecords())
-        )
+        return combineLatest([
+          merge(of(null), service.tableChanges$), 
+          toObservable(this.sortState, { injector: this.injector })
+        ]).pipe(
+          switchMap(([_, sort]) => {
+            return service.getAllRecords({
+              sortBy: sort.sortBy ?? undefined,
+              sortAscending: sort.ascending
+            });
+          })
+        );
       })
     ),
-    { initialValue: [] }
+    { initialValue: [], injector: this.injector }
   );
 
   protected readonly columnKeys = computed(() => Object.keys(this.config()) as ColumnNames<T>[]);
@@ -152,6 +165,16 @@ export class TableComponent<T>{
       } catch(error) {
         showErrorMessage(error);
       }
+    }
+  }
+
+  public async sortTable(column: ColumnNames<T>) {
+    if(this.sortState().sortBy === column) {
+      this.sortState.update((prev) => ({sortBy: prev.sortBy, ascending: !prev.ascending}))
+
+      
+    } else {
+      this.sortState.set({sortBy: column, ascending: true})
     }
   }
 

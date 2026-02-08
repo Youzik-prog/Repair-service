@@ -74,7 +74,12 @@ export interface Worker extends Row {
 export interface TableService<T> {
     tableName: string,
     tableChanges$: Subject<void>,
-    getAllRecords(): Observable<T[]>;
+    getAllRecords(transformation: {
+    sortBy?: ColumnNames<T>,
+    sortAscending?: boolean,
+    filterBy?: ColumnNames<T>,
+    filterFunction?: (el: T) => boolean
+  }): Observable<T[]>;
     getRecordById(id: number): Observable<T | null>;
     getRecordsByColumn(column: ColumnNames<T>, value: string): Observable<T[]>;
     updateRecord(id: number, record: T): void;

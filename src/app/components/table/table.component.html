@@ -1,9 +1,18 @@
-<p>table.component works!</p>
 <table [formArray]="formArray">
     <thead>
         <tr>
             @for (key of columnKeys(); track key) {
-                <th>{{ config()[key].label }}</th>
+                <th>
+                    @if (key === 'password') {
+                        <span>
+                            {{ config()[key].label }}
+                        </span>
+                    } @else {
+                        <button (click)="sortTable(key)">
+                            {{ config()[key].label }}
+                        </button>
+                    }
+                </th>
             }
         </tr>
     </thead>

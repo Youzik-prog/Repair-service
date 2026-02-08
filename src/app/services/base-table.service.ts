@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { from, map, Observable, Subject } from 'rxjs';
 import { ColumnNames, TableService } from '../core/types';
+import _, { sortBy } from 'lodash';
 
 @Injectable({
   providedIn: 'root',
@@ -15,16 +16,32 @@ export abstract class BaseTableService<T> implements TableService<T> {
   protected abstract toDomain(row: object): T;
   protected abstract validateRecord(record: T): object;
   
-  getAllRecords(): Observable<T[]> {
-    return from(
-      this.supabase.client
-        .from(this.tableName)
-        .select("*")
-        .order('id', { ascending: true })
-    ).pipe(
+  getAllRecords(transformation: {
+    sortBy?: ColumnNames<T>,
+    sortAscending?: boolean,
+    filterBy?: ColumnNames<T>,
+    filterFunction?: (el: T) => boolean
+  } = {sortAscending: true, filterFunction: () => true}): Observable<T[]> {
+    let query = this.supabase.client
+    .from(this.tableName)
+    .select("*");
+
+    if (transformation.sortBy) {
+      const validSortBy = _.snakeCase(transformation.sortBy);
+      query = query.order(validSortBy, { ascending: transformation.sortAscending });
+    } else {
+      query = query.order('id', { ascending: transformation.sortAscending });
+    }
+
+    return from(query).pipe(
       map(response => {
         if (response.error) throw response.error;
-        return (response.data || []).map(row => this.toDomain(row));
+        let data = (response.data || []).map(row => this.toDomain(row));
+        if(transformation.filterBy && transformation.filterFunction) {
+          data = data.filter(transformation.filterFunction)
+        }
+
+        return data;
       })
     );
   }
