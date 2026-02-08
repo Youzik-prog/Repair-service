@@ -78,7 +78,7 @@ export interface TableService<T> {
     sortBy?: ColumnNames<T>,
     sortAscending?: boolean,
     filterBy?: ColumnNames<T>,
-    filterFunction?: (el: T) => boolean
+    filterFunction?: (el: unknown) => boolean
   }): Observable<T[]>;
     getRecordById(id: number): Observable<T | null>;
     getRecordsByColumn(column: ColumnNames<T>, value: string): Observable<T[]>;

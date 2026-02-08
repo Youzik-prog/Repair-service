@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, computed, effect, inject, Injector, input
 import { ColumnConfig, ColumnNames, TableService } from '../../core/types';
 import { combineLatest, merge, Observable, of, switchMap } from 'rxjs';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { isRowsEqual, showErrorMessage } from '../../core/utils';
 import { RecordValidationError } from '../../core/errors';
@@ -27,17 +27,25 @@ export class TableComponent<T>{
     ascending: true
   });
 
+  public filterState = signal<{ filterBy: ColumnNames<T> | undefined, filterFunction: (el: unknown) => boolean}>({
+    filterBy: undefined,
+    filterFunction: () => true,
+  });
+
   public allRecords: Signal<T[]> = toSignal(
     toObservable(this.tableService).pipe(
       switchMap((service) => {
         return combineLatest([
           merge(of(null), service.tableChanges$), 
-          toObservable(this.sortState, { injector: this.injector })
+          toObservable(this.sortState, { injector: this.injector }),
+          toObservable(this.filterState, { injector: this.injector }),
         ]).pipe(
-          switchMap(([_, sort]) => {
+          switchMap(([_, sort, filter]) => {
             return service.getAllRecords({
               sortBy: sort.sortBy ?? undefined,
-              sortAscending: sort.ascending
+              sortAscending: sort.ascending,
+              filterBy: filter.filterBy,
+              filterFunction: filter.filterFunction,
             });
           })
         );
@@ -51,6 +59,12 @@ export class TableComponent<T>{
   private defaultTableRowsAmount: number = 10;
 
   protected formArray = new FormArray<FormGroup>([]);
+
+  protected filterForm = new FormGroup({
+    column: new FormControl('id'),
+    operator: new FormControl('equal'),
+    value: new FormControl('', [Validators.required, Validators.maxLength(25)]),
+  })
 
   private cdr = inject(ChangeDetectorRef);
 
@@ -119,7 +133,6 @@ export class TableComponent<T>{
 
       const control = new FormControl('', {
           validators: colConfig.validators, 
-          //asyncValidators: config.asyncValidatorFactory,
           updateOn: 'change'});
       
       group.addControl(key as string, control);
@@ -176,6 +189,43 @@ export class TableComponent<T>{
     } else {
       this.sortState.set({sortBy: column, ascending: true})
     }
+  }
+
+  public filterTable() {
+    let { column, operator, value } = this.filterForm.getRawValue();
+
+    column ??= 'id';
+    value ??= '';
+
+    let result: any = {filterBy: column as ColumnNames<T>};
+
+    let func: (el: T) => boolean;
+
+    switch(operator) {
+      case 'equal': 
+        func = (el) => el == value;
+        break;
+      case 'less':
+        func = (el) => el < value;
+        break;
+      case 'bigger':
+        func = (el) => el > value;
+        break;
+      default:
+        func = () => true;
+    }
+
+    result.filterFunction = func;
+
+    console.log(result);
+
+    this.filterState.set(result);
+  }
+
+  public resetFilter() {
+    this.filterState.set({
+      filterBy: undefined,
+      filterFunction: () => true,});
   }
 
   private checkRowValidators(index: number): boolean {

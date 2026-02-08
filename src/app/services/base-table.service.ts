@@ -20,7 +20,7 @@ export abstract class BaseTableService<T> implements TableService<T> {
     sortBy?: ColumnNames<T>,
     sortAscending?: boolean,
     filterBy?: ColumnNames<T>,
-    filterFunction?: (el: T) => boolean
+    filterFunction?: (el: unknown) => boolean
   } = {sortAscending: true, filterFunction: () => true}): Observable<T[]> {
     let query = this.supabase.client
     .from(this.tableName)
@@ -38,7 +38,10 @@ export abstract class BaseTableService<T> implements TableService<T> {
         if (response.error) throw response.error;
         let data = (response.data || []).map(row => this.toDomain(row));
         if(transformation.filterBy && transformation.filterFunction) {
-          data = data.filter(transformation.filterFunction)
+          console.log(transformation.filterFunction);
+          const column = transformation.filterBy;
+          const filterFn = transformation.filterFunction;
+          data = data.filter((row) => filterFn(row[column]))
         }
 
         return data;
