@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { RecordValidationError } from "./errors";
+import { RecordValidationError, TableExportError } from "./errors";
 import { Order, User } from "./types";
 import { isSupabaseError } from "./typeguards";
 import { AuthError } from "@supabase/supabase-js";
@@ -34,6 +34,9 @@ export function showErrorMessage(error: unknown): void {
     if(error instanceof RecordValidationError) {
       alert("Неправильное заполнение полей!\n" + error.message);
     } 
+    else if(error instanceof TableExportError) {
+      alert("Ошибка экспорта таблицы!\n" + error.message)
+    }
     else if(error instanceof AuthError) {
       alert(`Ошибка авториазации! ${error.message}`);
     }

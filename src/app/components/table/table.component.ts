@@ -217,8 +217,6 @@ export class TableComponent<T>{
 
     result.filterFunction = func;
 
-    console.log(result);
-
     this.filterState.set(result);
   }
 
@@ -226,6 +224,10 @@ export class TableComponent<T>{
     this.filterState.set({
       filterBy: undefined,
       filterFunction: () => true,});
+  }
+
+  public async downloadTable() {
+    await this.tableService().exportToCSV();
   }
 
   private checkRowValidators(index: number): boolean {

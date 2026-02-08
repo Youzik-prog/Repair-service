@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
-import { from, map, Observable, Subject } from 'rxjs';
+import { firstValueFrom, from, map, Observable, Subject } from 'rxjs';
 import { ColumnNames, TableService } from '../core/types';
 import _, { sortBy } from 'lodash';
 
@@ -38,7 +38,6 @@ export abstract class BaseTableService<T> implements TableService<T> {
         if (response.error) throw response.error;
         let data = (response.data || []).map(row => this.toDomain(row));
         if(transformation.filterBy && transformation.filterFunction) {
-          console.log(transformation.filterFunction);
           const column = transformation.filterBy;
           const filterFn = transformation.filterFunction;
           data = data.filter((row) => filterFn(row[column]))
@@ -101,6 +100,40 @@ export abstract class BaseTableService<T> implements TableService<T> {
 
     if (error) throw error;
     this.tableChanges$.next();
+  }
+
+  async exportToCSV(fileName: string = `${this.tableName}.csv`) {
+    const data = await firstValueFrom(this.getAllRecords());
+
+    if(data.length === 0) {
+      throw new Error("Экспортируемая таблица пуста.");
+    }
+
+    const keys = Object.keys(data[0] as object) as (keyof T)[];
+    const headers = keys.join(';');
+
+    const csvRows = data.map(row => {
+      return keys.map(key => {
+        const value = row[key];
+
+        const escaped = ('' + (value ?? '')).replace(/"/g, '""');
+        return `"${escaped}"`;
+      }).join(';');
+    });
+
+    const csvContent = [headers, ...csvRows].join('\n');
+
+    const blob = new Blob(['\ufeff' + csvContent], {type: 'text/csv;charset=utf8;'});
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', fileName);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   }
 
 }

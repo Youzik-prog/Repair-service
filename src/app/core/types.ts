@@ -84,7 +84,8 @@ export interface TableService<T> {
     getRecordsByColumn(column: ColumnNames<T>, value: string): Observable<T[]>;
     updateRecord(id: number, record: T): void;
     createRecord(record: T): void,
-    deleteRecord(id: number): void
+    deleteRecord(id: number): void,
+    exportToCSV(fileName?: string): void,
 }
 
 export type ColumnNames<T> = Extract<keyof T, string>;
