@@ -1,5 +1,5 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
 import { SupabaseService } from './services/supabase.service';
 import { OrdersService } from './services/orders.service';
 import { TableComponent } from './components/table/table.component';
@@ -10,6 +10,7 @@ import { DealersService } from './services/dealers.service';
 import { LoginComponent } from "./components/login/login.component";
 import { UserType } from './core/types';
 import { ProfileComponent } from "./components/profile/profile.component";
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -21,13 +22,23 @@ import { ProfileComponent } from "./components/profile/profile.component";
 export class App {
   protected readonly title = signal('Repair-service');
 
-  public config = USERS_CONFIG;
+  authService = inject(AuthService);
+  router = inject(Router);
+ 
 
-  public user = {id: 1, name: 'Валерий', password: '1234', type: UserType.admin, userUuid: 'kkdsfljklsdkflslgkflg'}
+  // public config = USERS_CONFIG;
 
-  constructor(supabaseService: SupabaseService, public someService: UsersService) {
-    // someService.createRecord({id: 123, userUuid: 'hui', name: 'Ильюха', lastName: 'Монеси', phone:'+375384932890', type: UserType.worker, password:'12345Ильюха Монеси'})
-    //supabaseService.getUsers();
-    //orderService.getAllOrders();
+  // public user = {id: 1, name: 'Валерий', password: '1234', type: UserType.admin, userUuid: 'kkdsfljklsdkflslgkflg'}
+
+  constructor(private supabaseService: SupabaseService, public someService: AuthService) {
+  }
+
+  async logout() {
+    await this.someService.logout();
+    console.log(
+    await this.supabaseService.client.auth.getSession()
+    );
+
+    this.router.navigate(['/login']);
   }
 }

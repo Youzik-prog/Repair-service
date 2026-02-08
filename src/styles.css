@@ -1,4 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+
+:root {
+
+}
+
+* {
+  padding: 0;
+}
+
 input.ng-invalid.ng-dirty {
   border: 2px solid red;
   outline: none;

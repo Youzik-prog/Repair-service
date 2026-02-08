@@ -58,20 +58,16 @@ export class AuthService {
     
   }
 
-  async createUser(user: User) {
+  async logout() {
+    console.log("SPERM");
+    const { error } = await this.supabase.client.auth.signOut();
+    if (error) {
+      throw new AuthError("Не удалось выйти из аккаунта");
+    }
+  }
 
-    let validatedUser: any = { password: user.password };
-
-    if(user.email)
-      validatedUser['email'] = user.email;
-    else if(user.phone)
-      validatedUser['phone'] = user.phone;
-
-    const { data: authData, error: authError } = await this.supabase.client.auth.signUp(validatedUser);
-    
-    if(authError) throw authError;
-
-    return authData.user;
-
+  async isAuthenticated(): Promise<boolean> {
+    const { data } = await this.supabase.client.auth.getSession();
+    return !!data.session;
   }
 }
