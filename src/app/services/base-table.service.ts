@@ -13,7 +13,7 @@ export abstract class BaseTableService<T> implements TableService<T> {
 
   constructor(protected supabase: SupabaseService, public readonly tableName: string) { }
 
-  protected abstract toDomain(row: object): T;
+  protected abstract toDomain(row: any): T;
   protected abstract validateRecord(record: T): object;
   
   getAllRecords(transformation: {

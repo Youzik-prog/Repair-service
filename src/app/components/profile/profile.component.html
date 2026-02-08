@@ -1,0 +1,21 @@
+<div>
+    <p>{{ userConfig['name'].label }}</p>
+    <p>{{ user().name }}</p>
+    
+    <p>{{ userConfig['lastName'].label }}</p>
+    <p>{{ user().lastName ?? 'отсутствует' }}</p>
+
+    <p>{{ userConfig['password'].label }}</p>
+    <p>{{ '*'.repeat(user().password.length) }}</p>
+
+    <p>{{ userConfig['email'].label }}</p>
+    <p>{{ user().email ?? 'отсутствует' }}</p>
+
+    <p>{{ userConfig['phone'].label }}</p>
+    <p>{{ user().phone ?? 'отсутствует' }}</p>
+
+    <p>{{ userConfig['type'].label }}</p>
+    <p>{{ user().type }}</p>
+
+    <button>Редактировать</button>
+</div>

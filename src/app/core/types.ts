@@ -40,7 +40,7 @@ export interface Detail extends Row {
 export interface DetailForOrder extends Row {
     detailId: number | string,
     orderId: number | string,
-    amount: number
+    amount?: number
 }
 
 export interface Device extends Row {
@@ -50,7 +50,7 @@ export interface Device extends Row {
     deviceTypeId?: Number
 }
 
-export interface Devices_types extends Row {
+export interface DevicesTypes extends Row {
     name: string
 }
 

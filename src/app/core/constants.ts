@@ -12,6 +12,8 @@ export const DETAILS_FOR_ORDER_TABLE_NAME = "Details_for_order";
 
 export const DEVICES_TABLE_NAME = "Devices";
 
+export const DEVICES_TYPES_TABLE_NAME = 'Devices_types';
+
 export const ORDERS_TABLE_NAME = "Orders";
 
 export const USERS_TABLE_NAME = "Users";

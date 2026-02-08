@@ -9,10 +9,11 @@ import { FormComponent } from "./components/form/form.component";
 import { DealersService } from './services/dealers.service';
 import { LoginComponent } from "./components/login/login.component";
 import { UserType } from './core/types';
+import { ProfileComponent } from "./components/profile/profile.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, TableComponent, FormComponent, LoginComponent],
+  imports: [RouterOutlet, TableComponent, FormComponent, LoginComponent, ProfileComponent],
   templateUrl: './app.html',
   styleUrl: './app.css',
   standalone: true,
@@ -21,6 +22,8 @@ export class App {
   protected readonly title = signal('Repair-service');
 
   public config = USERS_CONFIG;
+
+  public user = {id: 1, name: 'Валерий', password: '1234', type: UserType.admin, userUuid: 'kkdsfljklsdkflslgkflg'}
 
   constructor(supabaseService: SupabaseService, public someService: UsersService) {
     // someService.createRecord({id: 123, userUuid: 'hui', name: 'Ильюха', lastName: 'Монеси', phone:'+375384932890', type: UserType.worker, password:'12345Ильюха Монеси'})
