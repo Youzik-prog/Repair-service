@@ -29,61 +29,63 @@
     <button type="reset" (click)="resetFilter()">Очистить</button>
 </form>
 
-<table [formArray]="formArray">
-    <thead>
-        <tr>
-            @for (key of columnKeys(); track key) {
-                <th>
-                    @if (key === 'password') {
-                        <span>
-                            {{ config()[key].label }}
-                        </span>
-                    } @else {
-                        <button (click)="sortTable(key)">
-                            {{ config()[key].label }}
-                        </button>
-                    }
-                </th>
-            }
-        </tr>
-    </thead>
-    <tbody>
-       @for (group of formArray.controls; track group; let i = $index) {
-        <tr [formGroupName]="i">
-            @for (key of columnKeys(); track key) {
+<div class="table-container">
+    <table [formArray]="formArray">
+        <thead>
+            <tr>
+                @for (key of columnKeys(); track key) {
+                    <th>
+                        @if (key === 'password') {
+                            <span>
+                                {{ config()[key].label }}
+                            </span>
+                        } @else {
+                            <button (click)="sortTable(key)">
+                                {{ config()[key].label }}
+                            </button>
+                        }
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+        @for (group of formArray.controls; track group; let i = $index) {
+            <tr [formGroupName]="i">
+                @for (key of columnKeys(); track key) {
+                    <td>
+                        @let col = config()[key];
+                        
+                        @if(col.type === 'id' || col.type === 'uuid') {
+                            <span>{{ group.value[key] }}</span>
+                        }
+                        @if(col.type === 'text' || col.type === 'number' || col.type === 'email' || col.type === 'tel') {
+                            <input [type]="col.type" [formControlName]="key" min="0" (blur)="updateRow(i)" (keydown.enter)="updateRow(i)">
+                        }
+                        @else if (col.type === 'password') {
+                            <input type="password" [formControlName]="key" (blur)="updateRow(i)" (keydown.enter)="updateRow(i)">
+                        }
+                        @else if (col.type === 'date') {
+                            <input type="date" [formControlName]="key" (input)="updateRow(i)">
+                        }
+                        @else if (col.type === 'select') {
+                            <select [formControlName]="key" (change)="updateRow(i)">
+                                @for (opt of col.options; track opt.value) {
+                                    <option [value]="opt.value">{{ opt.value }}</option>
+                                }
+                            </select>
+                        }
+                    </td>
+                }
+                @if(group.value.id) {
                 <td>
-                    @let col = config()[key];
-                    
-                    @if(col.type === 'id' || col.type === 'uuid') {
-                        <span>{{ group.value[key] }}</span>
-                    }
-                    @if(col.type === 'text' || col.type === 'number' || col.type === 'email' || col.type === 'tel') {
-                        <input [type]="col.type" [formControlName]="key" min="0" (blur)="updateRow(i)" (keydown.enter)="updateRow(i)">
-                    }
-                    @else if (col.type === 'password') {
-                        <input type="password" [formControlName]="key" (blur)="updateRow(i)" (keydown.enter)="updateRow(i)">
-                    }
-                    @else if (col.type === 'date') {
-                        <input type="date" [formControlName]="key" (input)="updateRow(i)">
-                    }
-                    @else if (col.type === 'select') {
-                        <select [formControlName]="key" (change)="updateRow(i)">
-                            @for (opt of col.options; track opt.value) {
-                                <option [value]="opt.value">{{ opt.value }}</option>
-                            }
-                        </select>
-                    }
+                    <button class="delete-row-btn" (click)="deleteRow(group.value.id)">x</button>
                 </td>
-            }
-            @if(group.value.id) {
-            <td>
-                <button class="delete-row-btn" (click)="deleteRow(group.value.id)">x</button>
-            </td>
-            }
-        </tr>
-       }
-    </tbody>
-</table>
+                }
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
             
 <!-- for new row -->
 <div>

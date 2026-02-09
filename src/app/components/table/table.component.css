@@ -1,0 +1,7 @@
+.table-container {
+    padding-bottom: 1rem;
+
+    overflow: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-trans) transparent;
+}

@@ -8,6 +8,13 @@ import { BaseTableService } from './services/base-table.service';
 import { UsersService } from './services/users.service';
 import { SignupComponent } from './components/signup/signup.component';
 import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
+import { SpravkaComponent } from './components/spravka/spravka.component';
+import { TableComponent } from './components/table/table.component';
+import { OrdersService } from './services/orders.service';
+import { ORDERS_CONFIG } from './core/columnsConfigs';
+import { inject } from '@angular/core';
+
+const ordersServiceResolver = () => inject(OrdersService);
 
 export const routes: Routes = [
     {
@@ -27,7 +34,29 @@ export const routes: Routes = [
     children: [
       {
         path: 'admin',
-        component: AdminPanelComponent
+        component: AdminPanelComponent,
+        children: [
+          { path: '', 
+            redirectTo: 'home', 
+            pathMatch: 'full' 
+          },
+          {
+            path: 'home',
+            component: HomeComponent
+          },
+          {
+            path: 'orders',
+            component: TableComponent,
+            resolve: {
+              tableService: ordersServiceResolver,
+            },
+            data: { config: ORDERS_CONFIG }
+          }
+        ]
+      },
+      {
+        path: 'spravka',
+        component: SpravkaComponent
       },
       {
         path: '',

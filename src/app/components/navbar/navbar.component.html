@@ -1,0 +1,33 @@
+<nav class="navbar" #nav 
+    (mousedown)="onMouseDown($event)" 
+     (mouseleave)="onMouseUp()" 
+     (mouseup)="onMouseUp()" 
+     (mousemove)="onMouseMove($event)">
+  <div class="item center-container">
+    <a routerLink="home">Домашняя страница</a>
+  </div>
+  <div class="item center-container">
+    <a routerLink="/admin/orders">Заказы</a>
+  </div>
+  <div class="item center-container">
+    <a routerLink="users">Пользователи</a>
+  </div>
+  <div class="item center-container">
+    <a >Работники</a>
+  </div>
+  <div class="item center-container">
+    <a >Устройства</a>
+  </div>
+  <div class="item center-container">
+    <a >Детали</a>
+  </div>
+  <div class="item center-container">
+    <a >Поставщики</a>
+  </div>
+  <div class="item center-container">
+    <a >Детали для заказа</a>
+  </div>
+  <div class="item center-container">
+    <a >Типы устройств</a>
+  </div>
+</nav>

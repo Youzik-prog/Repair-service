@@ -42,7 +42,7 @@
 .profile-icon {
     height: calc(3vw + 20px);
     cursor: pointer;
-    transition: var(--transtition);
+    transition: var(--transition);
 }
 
 .profile-icon:hover {

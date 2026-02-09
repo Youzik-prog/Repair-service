@@ -1,4 +1,7 @@
 <app-header [userName]="currentUser()?.name || 'Без имени'" (showUserProfile)="showProfile()"></app-header>
+
+<!-- ABSOLUTE POSITIONING ELEMENTS -->
+
 <dialog #profileDialog class="modal-window profile-modal-window">
   @if (isProfileVisible() && currentUser(); as user) {
     <div class="modal-content">
@@ -6,3 +9,15 @@
     </div>
   }
 </dialog>
+
+<a class="spravka card" routerLink="/spravka">
+  <p class="link">?</p>
+</a>
+
+<!--  /ABSOLUTE POSITIONING ELEMENTS -->
+
+<app-navbar></app-navbar>
+
+<div class="container">
+  <router-outlet></router-outlet>
+</div>

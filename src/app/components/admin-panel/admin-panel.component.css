@@ -1,4 +1,7 @@
-
+.container {
+    padding: var(--global-padding);
+    padding-right: 0px;
+}
 
 .modal-window {
     position: absolute;
@@ -8,4 +11,3 @@
     top: 10%;
     left: 25%;
 }
-

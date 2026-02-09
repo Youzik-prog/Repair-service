@@ -4,10 +4,14 @@ import { ProfileComponent } from "../profile/profile.component";
 import { User } from '../../core/types';
 import { UsersService } from '../../services/users.service';
 import { AuthService } from '../../services/auth.service';
+import { SpravkaComponent } from "../spravka/spravka.component";
+import { RouterLink, RouterOutlet } from "@angular/router";
+import { NavbarComponent } from "../navbar/navbar.component";
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-admin-panel',
-  imports: [HeaderComponent, ProfileComponent],
+  imports: [HeaderComponent, ProfileComponent, RouterLink, RouterOutlet, CommonModule, NavbarComponent],
   templateUrl: './admin-panel.component.html',
   styleUrl: './admin-panel.component.css',
 })
@@ -28,8 +32,6 @@ export class AdminPanelComponent implements OnInit {
   ngOnInit(): void {
 
     const authUser = this.authUser();
-
-    
     
     this.userService.getRecordsByColumn('userUuid', authUser?.id).subscribe((user) => {
       if (user.length > 0) {
@@ -53,3 +55,4 @@ export class AdminPanelComponent implements OnInit {
   }
 
 }
+

@@ -15,7 +15,7 @@ import { HeaderComponent } from "./components/header/header.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, TableComponent, FormComponent, LoginComponent, ProfileComponent, HeaderComponent],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css',
   standalone: true,

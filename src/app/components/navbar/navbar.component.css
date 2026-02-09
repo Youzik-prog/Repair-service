@@ -1,0 +1,37 @@
+.navbar {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5vw;
+    padding: 5px var(--global-padding);
+    overflow-x: scroll;
+    height: 5rem;
+    border-bottom: 2px solid;
+    border-image-source: linear-gradient(to right, transparent, var(--primary), transparent);
+    border-image-slice: 1; 
+
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+
+    scrollbar-width: none;
+}
+
+.navbar .item {
+    height: 20px;
+    padding: 20px 15px;
+    border-radius: var(--small-radius);
+    font-weight: bold;
+    cursor: pointer;
+    background-color: transparent;
+    transition: var(--transition);
+}
+
+.navbar .item:hover {
+    transform: scale(1.05);
+    background-color: var(--grey-bg);
+}
+
+.navbar .item a {
+    text-align: center;
+}
