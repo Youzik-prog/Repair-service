@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { UsersService } from '../../services/users.service';
 import { User } from '../../core/types';
 import { USERS_CONFIG } from '../../core/columnsConfigs';
@@ -15,4 +15,6 @@ export class ProfileComponent {
   public user = input.required<User>()
 
   public userConfig = USERS_CONFIG;
+
+  closeUserProfile = output<void>();
 }

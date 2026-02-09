@@ -9,7 +9,7 @@
   --essential: rgba(0, 0, 0, 0.5);
   --shadow: rgba(0, 0, 0, 0.15);
 
-  --global-padding: 20px;
+  --global-padding: 30px;
 
   --big-radius: 25px;
   --small-radius: 4px;
@@ -29,6 +29,11 @@ body {
 
 a, .a {
   text-decoration: none;
+}
+
+.modal-window {
+  background: transparent;
+  border: none;
 }
 
 input, .input {
@@ -95,13 +100,16 @@ button:disabled:hover {
   max-width: 500px;
   width: 50vw;
   min-width: 250px;
+  overflow: hidden;
 }
 
 .form-card .form-name-container {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   height: 4rem;
   padding-left: 20px;
+  padding-right: 20px;
   background-color: var(--primary);
   outline: 1px solid var(--primary);
   border-radius: var(--big-radius) var(--big-radius) 0px 0px;
@@ -113,6 +121,8 @@ button:disabled:hover {
   flex-direction: column;
   padding: 20px;
   gap: 20px;
+  background-color: var(--bg);
+  
 }
 
 .form-card .content .label-field {
@@ -125,6 +135,10 @@ button:disabled:hover {
   font-size: 1.1rem;
 }
 
+.form-card .content .value {
+  color: var(--essential);
+}
+
 .card {
   box-shadow: 5px 5px 20px var(--shadow);
 }
@@ -132,4 +146,12 @@ button:disabled:hover {
 .essential {
   color: var(--essential);
   font-size: 0.8rem;
+}
+
+.close-button {
+  border-radius: 999px;
+  color: var(--primary);
+}
+.close-button:hover {
+  transform: scale(1.05);
 }

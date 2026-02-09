@@ -1,4 +1,4 @@
-import { Injectable, Signal, signal } from '@angular/core';
+import { Injectable, OnInit, Signal, signal } from '@angular/core';
 import { User, UserType } from '../core/types';
 import { SupabaseService } from './supabase.service';
 import { showErrorMessage } from '../core/utils';
@@ -13,7 +13,26 @@ import { firstValueFrom } from 'rxjs';
 export class AuthService {
   readonly currentUser = signal<User | null>(null);
 
-  constructor(private supabase: SupabaseService, private userService: UsersService) {}
+  constructor(private supabase: SupabaseService, private userService: UsersService) {
+    this.initializeAuth();
+  }
+
+  private async initializeAuth(): Promise<void> {
+
+    const { data: { user } } = await this.supabase.client.auth.getUser();
+
+    if (user) {
+      this.currentUser.set(user as unknown as User);
+    }
+
+    this.supabase.client.auth.onAuthStateChange((event, session) => {
+      if (session?.user) {
+        this.currentUser.set(session.user as unknown as User);
+      } else {
+        this.currentUser.set(null);
+      }
+    });
+  }
 
   async login(identifier: string, pass: string): Promise<void> {
 

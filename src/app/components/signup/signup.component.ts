@@ -5,10 +5,11 @@ import { ColumnNames, User, UserType } from '../../core/types';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { showErrorMessage } from '../../core/utils';
 import { Router } from '@angular/router';
+import { HeaderComponent } from "../header/header.component";
 
 @Component({
   selector: 'app-signup',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, HeaderComponent],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css',
 })

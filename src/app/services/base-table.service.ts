@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { computed, inject, Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { firstValueFrom, from, map, Observable, Subject } from 'rxjs';
 import { ColumnNames, TableService } from '../core/types';
 import _, { sortBy } from 'lodash';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -61,10 +62,13 @@ export abstract class BaseTableService<T> implements TableService<T> {
   }
 
   getRecordsByColumn(column: ColumnNames<T>, value: any): Observable<T[]> {
+
+    const validColumn = _.snakeCase(column);
+
     return from(this.supabase.client
       .from(this.tableName)
       .select('*')
-      .eq(column, value)
+      .eq(validColumn, value)
     ).pipe(
         map(response => {
         if (response.error) throw response.error;

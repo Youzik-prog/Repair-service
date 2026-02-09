@@ -1,21 +1,29 @@
-<div>
-    <p>{{ userConfig['name'].label }}</p>
-    <p>{{ user().name }}</p>
-    
-    <p>{{ userConfig['lastName'].label }}</p>
-    <p>{{ user().lastName ?? 'отсутствует' }}</p>
+<div class="container form-card card">
 
-    <p>{{ userConfig['password'].label }}</p>
-    <p>{{ '*'.repeat(user().password.length) }}</p>
+    <div class="form-name-container">
+        <h2>Профиль пользователя</h2>
+        <button (click)="closeUserProfile.emit()" class="close-button">x</button>
+    </div>
 
-    <p>{{ userConfig['email'].label }}</p>
-    <p>{{ user().email ?? 'отсутствует' }}</p>
+    <div class="content">
+        <label>{{ userConfig['name'].label }}</label>
+        <p class="value">{{ user().name }}</p>
+        
+        <label>{{ userConfig['lastName'].label }}</label>
+        <p class="value">{{ user().lastName ?? 'отсутствует' }}</p>
 
-    <p>{{ userConfig['phone'].label }}</p>
-    <p>{{ user().phone ?? 'отсутствует' }}</p>
+        <label>{{ userConfig['password'].label }}</label>
+        <p class="value">{{ '*'.repeat(user().password.length) }}</p>
 
-    <p>{{ userConfig['type'].label }}</p>
-    <p>{{ user().type }}</p>
+        <label>{{ userConfig['email'].label }}</label>
+        <p class="value">{{ user().email ?? 'отсутствует' }}</p>
 
-    <button>Редактировать</button>
+        <label>{{ userConfig['phone'].label }}</label>
+        <p class="value">{{ user().phone ?? 'отсутствует' }}</p>
+
+        <label>{{ userConfig['type'].label }}</label>
+        <p class="value">{{ user().type }}</p>
+
+        <!-- <button>Редактировать</button> -->
+    </div>
 </div>

@@ -3,6 +3,7 @@ import { RecordValidationError, TableExportError } from "./errors";
 import { Order, User } from "./types";
 import { isSupabaseError } from "./typeguards";
 import { AuthError } from "@supabase/supabase-js";
+import { Observable } from "rxjs";
 
 export const toCamel = (obj: object) => _.mapKeys(obj, (v, k) => _.camelCase(k));
 export const toSnake = (obj: object) => _.mapKeys(obj, (v, k) => _.snakeCase(k));
@@ -59,4 +60,3 @@ export function showErrorMessage(error: unknown): void {
       console.error(error);
     }
   }
-

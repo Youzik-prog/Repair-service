@@ -1,0 +1,8 @@
+<app-header [userName]="currentUser()?.name || 'Без имени'" (showUserProfile)="showProfile()"></app-header>
+<dialog #profileDialog class="modal-window profile-modal-window">
+  @if (isProfileVisible() && currentUser(); as user) {
+    <div class="modal-content">
+      <app-profile [user]="user" (closeUserProfile)="closeProfile()"></app-profile>
+    </div>
+  }
+</dialog>

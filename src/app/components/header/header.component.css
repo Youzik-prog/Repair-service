@@ -2,9 +2,10 @@
 
 .container {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding: 20px 25px;
+    padding: 20px 5vw;
     background: linear-gradient(#366aca, var(--primary));
     box-sizing: border-box;
 }
@@ -23,4 +24,27 @@
     font-family:'Times New Roman', Times, serif;
     font-style: bold italic;
     text-shadow: 10px 5px 10px rgb(255, 0, 0), 0px 0px 1px white;
+}
+
+.profile {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+    
+}
+
+.profile-name {
+    font-size: calc(1vw + 10px);
+    color: white;
+}
+
+.profile-icon {
+    height: calc(3vw + 20px);
+    cursor: pointer;
+    transition: var(--transtition);
+}
+
+.profile-icon:hover {
+    transform: scale(1.05);
 }

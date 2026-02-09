@@ -1,3 +1,9 @@
 <div class="container">
     <a routerLink="/home" class="logo">ЧекСервис</a>
+    @if (userName()) {
+        <div class="profile">
+            <p class="profile-name">{{ userName() }}</p>
+            <img (click)="showProfile()" src="/assets/user.svg" alt="User Profile" class="profile-icon">
+        </div>
+    }
 </div>

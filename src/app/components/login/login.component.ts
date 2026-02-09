@@ -4,10 +4,11 @@ import { USERS_CONFIG } from '../../core/columnsConfigs';
 import { AuthService } from '../../services/auth.service';
 import { showErrorMessage } from '../../core/utils';
 import { Router, RouterLink } from "@angular/router";
+import { HeaderComponent } from "../header/header.component";
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, HeaderComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })

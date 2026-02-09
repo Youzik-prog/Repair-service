@@ -7,6 +7,7 @@ import { FormComponent } from './components/form/form.component';
 import { BaseTableService } from './services/base-table.service';
 import { UsersService } from './services/users.service';
 import { SignupComponent } from './components/signup/signup.component';
+import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
 
 export const routes: Routes = [
     {
@@ -25,19 +26,19 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [
       {
-        path: 'home',
-        component: HomeComponent
+        path: 'admin',
+        component: AdminPanelComponent
       },
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'home'
+        redirectTo: 'admin'
       }
     ]
   },
 
   {
     path: '**',
-    redirectTo: 'home'
+    redirectTo: 'admin'
   }
 ];

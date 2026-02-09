@@ -1,16 +1,18 @@
-import { Injectable } from '@angular/core';
+import { computed, inject, Injectable } from '@angular/core';
 import { User } from '../core/types';
 import { SupabaseService } from './supabase.service';
 import { USERS_TABLE_NAME } from '../core/constants';
 import { BaseTableService } from './base-table.service';
 import { RecordValidationError } from '../core/errors';
 import { AuthError } from '@supabase/supabase-js';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, map, Observable } from 'rxjs';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsersService extends BaseTableService<User>{
+
   constructor(supabase: SupabaseService) {
     super(supabase, USERS_TABLE_NAME);
    }
@@ -94,26 +96,26 @@ export class UsersService extends BaseTableService<User>{
   }
 
   protected validateRecord = function(user: User): object {
-  if(!user.name) {
-    throw new RecordValidationError("Не заполнено имя пользователя!");
-  } 
-  else if(!user.password) {
-    throw new RecordValidationError("Не заполнен пароль!");
-  }
-  else if(!user.email && !user.phone) {
-    throw new RecordValidationError("Нужно заполнить номер телефона или электронную почту!");
-  }
-  else if(!user.type) {
-    throw new RecordValidationError("Не заполнен тип пользователя!");
-  }
+    if(!user.name) {
+      throw new RecordValidationError("Не заполнено имя пользователя!");
+    } 
+    else if(!user.password) {
+      throw new RecordValidationError("Не заполнен пароль!");
+    }
+    else if(!user.email && !user.phone) {
+      throw new RecordValidationError("Нужно заполнить номер телефона или электронную почту!");
+    }
+    else if(!user.type) {
+      throw new RecordValidationError("Не заполнен тип пользователя!");
+    }
 
-  return {
-    name: user.name,
-    password: user.password || null,
-    last_name: user.lastName || null,
-    email: user.email || null,
-    phone: user.phone || null,
-    type: user.type
+    return {
+      name: user.name,
+      password: user.password || null,
+      last_name: user.lastName || null,
+      email: user.email || null,
+      phone: user.phone || null,
+      type: user.type
+    }
   }
-}
 }
