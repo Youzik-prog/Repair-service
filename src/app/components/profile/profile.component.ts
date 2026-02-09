@@ -17,4 +17,6 @@ export class ProfileComponent {
   public userConfig = USERS_CONFIG;
 
   closeUserProfile = output<void>();
+
+  logout = output<void>();
 }

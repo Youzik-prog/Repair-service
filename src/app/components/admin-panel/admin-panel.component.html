@@ -5,7 +5,7 @@
 <dialog #profileDialog class="modal-window profile-modal-window">
   @if (isProfileVisible() && currentUser(); as user) {
     <div class="modal-content">
-      <app-profile [user]="user" (closeUserProfile)="closeProfile()"></app-profile>
+      <app-profile [user]="user" (closeUserProfile)="closeProfile()" (logout)="logout()"></app-profile>
     </div>
   }
 </dialog>

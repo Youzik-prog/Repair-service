@@ -24,6 +24,8 @@
         <label>{{ userConfig['type'].label }}</label>
         <p class="value">{{ user().type }}</p>
 
-        <!-- <button>Редактировать</button> -->
+        <div class="logout-container">
+            <button (click)="logout.emit()" class="logout negative">Выйти</button>
+        </div>
     </div>
 </div>

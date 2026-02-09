@@ -2,3 +2,12 @@
     border: 2px solid var(--primary);
     
 }
+
+.logout-container {
+    display: flex;
+    justify-content: center;
+}
+
+.logout {
+    width: 50%;
+}

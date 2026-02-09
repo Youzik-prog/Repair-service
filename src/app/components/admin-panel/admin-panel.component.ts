@@ -5,9 +5,10 @@ import { User } from '../../core/types';
 import { UsersService } from '../../services/users.service';
 import { AuthService } from '../../services/auth.service';
 import { SpravkaComponent } from "../spravka/spravka.component";
-import { RouterLink, RouterOutlet } from "@angular/router";
+import { Router, RouterLink, RouterOutlet } from "@angular/router";
 import { NavbarComponent } from "../navbar/navbar.component";
 import { CommonModule } from '@angular/common';
+import { showErrorMessage } from '../../core/utils';
 
 @Component({
   selector: 'app-admin-panel',
@@ -20,6 +21,8 @@ export class AdminPanelComponent implements OnInit {
   private userService = inject(UsersService);
 
   private authService = inject(AuthService);
+
+  private router = inject(Router);
 
   authUser = computed(() => this.authService.currentUser());
 
@@ -52,6 +55,16 @@ export class AdminPanelComponent implements OnInit {
   closeProfile() {
     this.isProfileVisible.set(false);
     this.dialog.nativeElement.close();
+  }
+
+  async logout() {
+    try {
+      await this.authService.logout();
+
+      this.router.navigate(['login']);
+    } catch(error) {
+      showErrorMessage(error);
+    }
   }
 
 }

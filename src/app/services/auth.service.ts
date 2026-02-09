@@ -72,13 +72,10 @@ export class AuthService {
       await this.supabase.client.auth.signOut();
       throw new AuthError("ТЕБЕ сюда нелья!🤨 Доступ только для админов😊\nЭто автоматизированное рабочее место менеджера ателье по ремонту бытовой техники только для крутых!😎");
     }
-
-    this.currentUser.set(user);
     
   }
 
   async logout() {
-    console.log("SPERM");
     const { error } = await this.supabase.client.auth.signOut();
     if (error) {
       throw new AuthError("Не удалось выйти из аккаунта");
