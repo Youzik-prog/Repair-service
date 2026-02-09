@@ -3,7 +3,11 @@
 :root {
   --primary: #4483f7;
   --primary-trans: #4483f7c9;
+  --error-primary: #f74444;
+  --green-primary: rgb(37, 136, 37);
   --surface: #e6efff;
+  --error-surface: #ffe6e6;
+  --green-surface: #e9ffe6;
   --border-gray: gray;
   --on-surface: rgb(33, 31, 40);
   --bg: #fbfcff;
@@ -103,6 +107,26 @@ button:disabled, .button:disabled {
 button:disabled:hover {
   outline: none;
   box-shadow: 0px 0px 0px;
+}
+
+button.negative {
+  background-color: var(--error-surface);
+  border-color: var(--error-primary);
+  color: var(--error-primary);
+}
+
+button.negative:hover {
+  outline: 1px solid var(--error-primary);
+}
+
+button.positive {
+  background-color: var(--green-surface);
+  border-color: var(--green-primary);
+  color: var(--green-primary);
+}
+
+button.positive:hover {
+  outline: 1px solid var(--green-primary);
 }
 
 select {

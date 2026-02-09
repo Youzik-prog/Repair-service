@@ -1,106 +1,119 @@
-<form [formGroup]="filterForm" (ngSubmit)="filterTable()" class="filter-form">
-    <h2 class="filter-label">Отфильтровать</h2>
-    <div class="select-and-radio">
-        <select formControlName="column">
-            <option ngValue="id">id</option>
-            @for (key of columnKeys(); track key) {
-                @if(key !== 'password' && key !== 'id') {
-                    <option [value]="key">{{ key }}</option>
+<div class="container">
+    <form [formGroup]="filterForm" (ngSubmit)="filterTable()" class="filter-form">
+        <h2 class="filter-label">Отфильтровать</h2>
+        <div class="select-and-radio">
+            <select formControlName="column">
+                <option ngValue="id">id</option>
+                @for (key of columnKeys(); track key) {
+                    @if(key !== 'password' && key !== 'id') {
+                        <option [value]="key">{{ key }}</option>
+                    }
                 }
-            }
-        </select>
-        <div class="operators">
-            <div class="operator">
-                <input type="radio" id="equal" value="equal" checked formControlName="operator">
-                <label for="equal">Равно</label>
-            </div>
-            <div class="operator">
-                <input type="radio" id="less" value="less" formControlName="operator">
-                <label for="less">Меньше</label>
-            </div>
-            <div class="operator">
-                <input type="radio" id="bigger" value="bigger" formControlName="operator">
-                <label for="bigger">Больше</label>
+            </select>
+            <div class="operators">
+                <div class="operator">
+                    <input type="radio" id="equal" value="equal" checked formControlName="operator">
+                    <label for="equal">Равно</label>
+                </div>
+                <div class="operator">
+                    <input type="radio" id="less" value="less" formControlName="operator">
+                    <label for="less">Меньше</label>
+                </div>
+                <div class="operator">
+                    <input type="radio" id="bigger" value="bigger" formControlName="operator">
+                    <label for="bigger">Больше</label>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="value">
-        <label for="value">Значение</label>
-        <input type="text" id="Значение"  formControlName="value">
-    </div>
-    <button type="submit" [disabled]="filterForm.invalid">Применить</button>
-    <button type="reset" (click)="resetFilter()">Очистить</button>
-</form>
+        <div class="value-and-buttons">
+            <div class="value">
+                <label for="value">Значение</label>
+                <input type="text" id="Значение"  formControlName="value">
+            </div>
+            <button type="submit" [disabled]="filterForm.invalid">Применить</button>
+            <button type="reset" (click)="resetFilter()">Очистить</button>
+        </div>
+    </form>
 
-<div class="table-container">
-    <table [formArray]="formArray">
-        <thead>
-            <tr>
-                @for (key of columnKeys(); track key) {
-                    <th>
-                        @if (key === 'password') {
-                            <span class="column">
-                                {{ config()[key].label }}
-                            </span>
-                        } @else {
-                            <button (click)="sortTable(key)" class="column">
-                                {{ config()[key].label }}
-                            </button>
-                        }
-                    </th>
-                }
-            </tr>
-        </thead>
-        <tbody>
-        @for (group of formArray.controls; track group; let i = $index) {
-            <tr [formGroupName]="i">
-                @for (key of columnKeys(); track key) {
-                    <td  class="row">
-                        @let col = config()[key];
-                        
-                        @if(col.type === 'id' || col.type === 'uuid') {
-                            <span>{{ group.value[key] }}</span>
-                        }
-                        @if(col.type === 'text' || col.type === 'number' || col.type === 'email' || col.type === 'tel') {
-                            <input [type]="col.type" [formControlName]="key" min="0" (blur)="updateRow(i)" (keydown.enter)="updateRow(i)">
-                        }
-                        @else if (col.type === 'password') {
-                            <input type="password" [formControlName]="key" (blur)="updateRow(i)" (keydown.enter)="updateRow(i)">
-                        }
-                        @else if (col.type === 'date') {
-                            <input type="date" [formControlName]="key" (input)="updateRow(i)">
-                        }
-                        @else if (col.type === 'select') {
-                            <select [formControlName]="key" (change)="updateRow(i)">
-                                @for (opt of col.options; track opt.value) {
-                                    <option [value]="opt.value">{{ opt.value }}</option>
-                                }
-                            </select>
-                        }
+    <div class="table-container">
+        <table [formArray]="formArray">
+            <thead>
+                <tr>
+                    @for (key of columnKeys(); track key) {
+                        <th>
+                            @if (key === 'password') {
+                                <span class="column">
+                                    {{ config()[key].label }}
+                                </span>
+                            } @else {
+                                <button (click)="sortTable(key)" class="column">
+                                    <p>
+                                        {{ config()[key].label }}
+                                    </p>
+                                    <img src="/assets/sort-arrows.svg" alt="sort" style="width: 15px;">
+                                </button>
+                            }
+                        </th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+            @for (group of formArray.controls; track group; let i = $index) {
+                <tr [formGroupName]="i">
+                    @for (key of columnKeys(); track key) {
+                        <td  class="row">
+                            @let col = config()[key];
+                            
+                            @if(col.type === 'id' || col.type === 'uuid') {
+                                <span>{{ group.value[key] }}</span>
+                            }
+                            @if(col.type === 'text' || col.type === 'number' || col.type === 'email' || col.type === 'tel') {
+                                <input [type]="col.type" [formControlName]="key" min="0" (blur)="updateRow(i)" (keydown.enter)="updateRow(i)">
+                            }
+                            @else if (col.type === 'password') {
+                                <input type="password" [formControlName]="key" (blur)="updateRow(i)" (keydown.enter)="updateRow(i)">
+                            }
+                            @else if (col.type === 'date') {
+                                <input type="date" [formControlName]="key" (input)="updateRow(i)">
+                            }
+                            @else if (col.type === 'select') {
+                                <select [formControlName]="key" (change)="updateRow(i)">
+                                    @for (opt of col.options; track opt.value) {
+                                        <option [value]="opt.value">{{ opt.value }}</option>
+                                    }
+                                </select>
+                            }
+                        </td>
+                    }
+                    @if(group.value.id) {
+                    <td>
+                        <button class="delete-row-btn negative" (click)="deleteRow(group.value.id)">x</button>
                     </td>
-                }
-                @if(group.value.id) {
-                <td>
-                    <button class="delete-row-btn" (click)="deleteRow(group.value.id)">x</button>
-                </td>
-                }
-            </tr>
-        }
-        </tbody>
-    </table>
-</div>
-            
-<!-- for new row -->
-<div>
-    @if(isNewRowCreation()) {
-        <button (click)="acceptRowCreation()">Сохранить</button>
-        <button (click)="rejectRowCreation()">Отменить</button>
-    } 
-    @else {
-        <button (click)="createRow()">Добавить запись</button>
-    }
-</div>
+                    }
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+                
+    <!-- for new row -->
 
-<div>
-    <button (click)="downloadTable()">Скачать таблицу</button>
+    <div class="table-buttons">
+        <div class="create-record">
+            @if(isNewRowCreation()) {
+                <button (click)="acceptRowCreation()">Сохранить</button>
+                <button (click)="rejectRowCreation()">Отменить</button>
+            } 
+            @else {
+                <button (click)="createRow()">Добавить запись</button>
+            }
+        </div>
+
+        <div>
+            <button (click)="downloadTable()" class="download-table positive">
+                <img src="/assets/download.svg" alt="" style="width: 20px;">
+                <p>Скачать таблицу</p>
+            </button>
+        </div>
+    </div>
 </div>
