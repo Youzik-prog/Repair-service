@@ -1,14 +1,135 @@
 /* You can add global styles to this file, and also import other style files */
 
 :root {
+  --primary: #4483f7;
+  --surface: #e6efff;
+  --border-gray: gray;
+  --on-surface: rgb(33, 31, 40);
+  --bg: #fbfcff;
+  --essential: rgba(0, 0, 0, 0.5);
+  --shadow: rgba(0, 0, 0, 0.15);
 
+  --global-padding: 20px;
+
+  --big-radius: 25px;
+  --small-radius: 4px;
+
+  --transtition: all 0.2s ease-in-out;
 }
 
 * {
   padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: 'Roboto';
+  color: var(--on-surface);
+}
+
+a, .a {
+  text-decoration: none;
+}
+
+input, .input {
+  height: 2.5rem;
+  border: 2px solid var(--border-gray);
+  border-radius: var(--small-radius);
+  padding: 0px 10px;
+  font-size: 1rem;
+  transition: var(--transtition);
+}
+
+input:hover, .input:hover {
+  border: 2px solid var(--primary);
+  /* outline: 2px solid var(--primary); */
+}
+
+input:focus, .input:focus {
+  /* background-color: var(--surface); */
+  border: 2px solid var(--primary);
+  outline: 1px solid var(--primary);
+  box-shadow: 5px 5px 10px var(--shadow);
 }
 
 input.ng-invalid.ng-dirty {
   border: 2px solid red;
   outline: none;
+}
+
+button, .button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 2.5rem;
+  padding: 0px 15px;
+  border: 2px solid var(--primary);
+  border-radius: var(--small-radius);
+  background-color: var(--surface);
+  color: var(--on-surface);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: var(--transtition);
+}
+
+button:hover, .button:hover {
+  outline: 1px solid var(--primary);
+  box-shadow: 5px 5px 10px var(--shadow);
+}
+
+button:disabled, .button:disabled {
+  border-color: var(--border-gray);
+  background-color: white;
+  color: var(--essential);
+  cursor: default;
+}
+
+button:disabled:hover {
+  outline: none;
+  box-shadow: 0px 0px 0px;
+}
+
+.form-card {
+  border: 2px solid var(--primary);
+  border-radius: var(--big-radius);
+  max-width: 500px;
+  width: 50vw;
+  min-width: 250px;
+}
+
+.form-card .form-name-container {
+  display: flex;
+  align-items: center;
+  height: 4rem;
+  padding-left: 20px;
+  background-color: var(--primary);
+  outline: 1px solid var(--primary);
+  border-radius: var(--big-radius) var(--big-radius) 0px 0px;
+  color: white;
+}
+
+.form-card .content {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 20px;
+}
+
+.form-card .content .label-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-card .content label, .label {
+  font-size: 1.1rem;
+}
+
+.card {
+  box-shadow: 5px 5px 20px var(--shadow);
+}
+
+.essential {
+  color: var(--essential);
+  font-size: 0.8rem;
 }

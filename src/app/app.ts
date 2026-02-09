@@ -11,10 +11,11 @@ import { LoginComponent } from "./components/login/login.component";
 import { UserType } from './core/types';
 import { ProfileComponent } from "./components/profile/profile.component";
 import { AuthService } from './services/auth.service';
+import { HeaderComponent } from "./components/header/header.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, TableComponent, FormComponent, LoginComponent, ProfileComponent],
+  imports: [RouterOutlet, TableComponent, FormComponent, LoginComponent, ProfileComponent, HeaderComponent],
   templateUrl: './app.html',
   styleUrl: './app.css',
   standalone: true,
@@ -26,19 +27,10 @@ export class App {
   router = inject(Router);
  
 
-  // public config = USERS_CONFIG;
+  public config = USERS_CONFIG;
 
   // public user = {id: 1, name: 'Валерий', password: '1234', type: UserType.admin, userUuid: 'kkdsfljklsdkflslgkflg'}
 
-  constructor(private supabaseService: SupabaseService, public someService: AuthService) {
-  }
-
-  async logout() {
-    await this.someService.logout();
-    console.log(
-    await this.supabaseService.client.auth.getSession()
-    );
-
-    this.router.navigate(['/login']);
+  constructor(private supabaseService: SupabaseService, public someService: UsersService) {
   }
 }

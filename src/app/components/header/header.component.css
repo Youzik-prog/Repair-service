@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=WDXL+Lubrifont+JP+N&display=swap');
+
+.container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 20px 25px;
+    background: linear-gradient(#366aca, var(--primary));
+    box-sizing: border-box;
+}
+
+.logo {
+    font-family: "WDXL Lubrifont JP N", sans-serif;
+    letter-spacing: 2px;
+    font-size: calc(3vw + 20px);
+    line-height: calc(3vw + 20px);
+    color: white;
+    transition: all 0.2s ease-in-out;
+}
+
+.logo:hover {
+    transform: rotate3d(-1, 1, 0, 30deg);
+    font-family:'Times New Roman', Times, serif;
+    text-shadow: 10px 5px 10px rgb(255, 0, 0), 0px 0px 1px white;
+}

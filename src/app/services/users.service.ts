@@ -19,7 +19,7 @@ export class UsersService extends BaseTableService<User>{
 
     const validUser: any = this.validateRecord(user);
 
-     const { data, error } = await this.supabase.client.rpc('update_full_user', {
+     const { data, error } = await this.supabase.client.rpc('create_full_user', {
       user_email: validUser.email,
       user_password: validUser.password,
       user_name: validUser.name,

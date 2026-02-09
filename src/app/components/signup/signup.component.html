@@ -1,0 +1,19 @@
+<div class="container">
+    <form [formGroup]="form" (ngSubmit)="signnUp()" class="form-card card">
+        <div class="form-name-container">
+            <h2 class="form-name">Зарегестрироваться</h2>
+        </div>
+        <div class="content">
+            @for (key of columnKeys(); track key) {
+                @let con = config[key];
+
+                <div class="label-field">
+                    <label [htmlFor]="key">{{ con.label }}</label>
+                    <input [type]="con.type" [id]="key" [formControlName]="key">
+                </div>
+            }
+
+            <button type="submit" [disabled]="form.invalid">Зарегестрироваться</button>
+        </div>
+    </form>
+</div>

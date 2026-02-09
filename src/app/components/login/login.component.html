@@ -1,9 +1,26 @@
-<form [formGroup]="loginForm" (ngSubmit)="loginAdmin()">
-    <label for="login">Электронная почта или номер телефона</label>
-    <input type="text" id="login" formControlName="login">
+<div class="container">
+    <form [formGroup]="loginForm" (ngSubmit)="loginAdmin()" class="form-card card">
+        <div class="form-name-container">
+            <h2 class="form-name">Войти в аккаунт</h2>
+        </div>
+        <div class="content">
+            <div class="label-field">
+                <label for="login">Электронная почта или номер телефона</label>
+                <input type="text" id="login" formControlName="login">
+            </div>
 
-    <label for="password">Пароль</label>
-    <input type="password" id="password" autocomplete="current-password" formControlName="password">
+            <div class="label-field">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" autocomplete="current-password" formControlName="password">
+            </div>
 
-    <button type="submit" [disabled]="loginForm.invalid">Войти</button>
-</form>
+            <button type="submit" [disabled]="loginForm.invalid">Войти</button>
+        </div>
+    </form>
+    <div class="essential">
+        <p>Тестовые данные администратора для входа</p>
+        <p>Электронная почта: admin@mail.com</p>
+        <p>Пароль: admin</p>
+    </div>
+    <a routerLink="/signup" class="button">Зарегестрироваться</a>
+</div>

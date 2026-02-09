@@ -39,7 +39,7 @@ export class FormComponent<T> implements OnInit {
     }    
   }
 
-  public async onSignUp() {
+  public async onSumbit() {
     if(this.form.valid) {
       try {
         await this.tableService().createRecord({...this.form.value} as T);
