@@ -3,31 +3,31 @@
      (mouseleave)="onMouseUp()" 
      (mouseup)="onMouseUp()" 
      (mousemove)="onMouseMove($event)">
-  <div class="item center-container">
-    <a routerLink="home">Домашняя страница</a>
-  </div>
-  <div class="item center-container">
-    <a routerLink="/admin/orders">Заказы</a>
-  </div>
-  <div class="item center-container">
-    <a routerLink="users">Пользователи</a>
-  </div>
-  <div class="item center-container">
-    <a >Работники</a>
-  </div>
-  <div class="item center-container">
-    <a >Устройства</a>
-  </div>
-  <div class="item center-container">
-    <a >Детали</a>
-  </div>
-  <div class="item center-container">
-    <a >Поставщики</a>
-  </div>
-  <div class="item center-container">
-    <a >Детали для заказа</a>
-  </div>
-  <div class="item center-container">
-    <a >Типы устройств</a>
-  </div>
+  <a class="item center-container" routerLink="home" routerLinkActive="item-active">
+    <img src="/assets/home.svg" alt="" style="width: 30px;">
+  </a>
+  <a class="item center-container" routerLink="/admin/orders" routerLinkActive="item-active">
+    <p>Заказы</p>
+  </a>
+  <a class="item center-container" routerLink="/admin/users" routerLinkActive="item-active">
+    <p>Пользователи</p>
+  </a>
+  <a class="item center-container" routerLink="/admin/workers" routerLinkActive="item-active">
+    <p>Работники</p>
+  </a>
+  <a class="item center-container" routerLink="/admin/devices" routerLinkActive="item-active">
+    <p>Устройства</p>
+  </a>
+  <a class="item center-container" routerLink="/admin/details" routerLinkActive="item-active">
+    <p>Детали</p>
+  </a>
+  <a class="item center-container" routerLink="/admin/dealers" routerLinkActive="item-active">
+    <p>Поставщики</p>
+  </a>
+  <a class="item center-container" routerLink="/admin/details-for-order" routerLinkActive="item-active">
+    <p>Детали для заказа</p>
+  </a>
+  <a class="item center-container" routerLink="/admin/devices-types" routerLinkActive="item-active">
+    <p>Типы устройств</p>
+  </a>
 </nav>

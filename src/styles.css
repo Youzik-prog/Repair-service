@@ -12,6 +12,7 @@
   --shadow: rgba(0, 0, 0, 0.15);
 
   --global-padding: 30px;
+  --main-padding: 3vw;
 
   --big-radius: 25px;
   --small-radius: 4px;
@@ -33,6 +34,10 @@ body {
 
 a, .a {
   text-decoration: none;
+}
+
+a:visited {
+  color: unset;
 }
 
 .modal-window {
@@ -72,8 +77,8 @@ button, .button {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 2.5rem;
-  padding: 0px 15px;
+  /* height: fit-content; */
+  padding: 10px 15px;
   border: 2px solid var(--primary);
   border-radius: var(--small-radius);
   background-color: var(--surface);
@@ -98,6 +103,34 @@ button:disabled, .button:disabled {
 button:disabled:hover {
   outline: none;
   box-shadow: 0px 0px 0px;
+}
+
+select {
+  height: 2.5rem;
+  padding: 10px 10px;
+  font-size: 1rem;
+  border: 2px solid var(--primary);
+  border-radius: var(--small-radius);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+select:hover {
+  outline: 2px solid var(--primary);
+}
+
+select:focus {
+  background-color: var(--surface);
+  outline: 2px solid var(--primary);
+}
+
+input[type="radio"] {
+  width: 1.3rem;
+}
+
+input[type="radio"]:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 /* MY UI ELEMENTS */
@@ -157,8 +190,7 @@ button:disabled:hover {
   bottom: 5vh;
   right: 5vw;
   border: 2px solid var(--primary);
-  background-color: white;
-  color: var(--primary);
+  background: linear-gradient(var(--surface), white);
   box-shadow: 5px 5px 10px var(--shadow) !important;
   font-weight: bold;
   border-radius: 999px;
@@ -168,6 +200,10 @@ button:disabled:hover {
 
 .spravka:hover {
   transform: scale(1.1);
+}
+
+.spravka-text {
+  color: var(--primary);
 }
 
 .close-button {

@@ -1,5 +1,5 @@
 .container {
-    padding: var(--global-padding);
+    padding: var(--main-padding);
 }
 
 .back-link {

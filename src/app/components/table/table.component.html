@@ -1,27 +1,30 @@
-<form [formGroup]="filterForm" (ngSubmit)="filterTable()">
-    <select formControlName="column">
-        <option ngValue="id">id</option>
-        @for (key of columnKeys(); track key) {
-            @if(key !== 'password' && key !== 'id') {
-                <option [value]="key">{{ key }}</option>
+<form [formGroup]="filterForm" (ngSubmit)="filterTable()" class="filter-form">
+    <h2 class="filter-label">Отфильтровать</h2>
+    <div class="select-and-radio">
+        <select formControlName="column">
+            <option ngValue="id">id</option>
+            @for (key of columnKeys(); track key) {
+                @if(key !== 'password' && key !== 'id') {
+                    <option [value]="key">{{ key }}</option>
+                }
             }
-        }
-    </select>
-    <div>
-        <div>
-            <input type="radio" id="equal" value="equal" checked formControlName="operator">
-            <label for="equal">Равно</label>
-        </div>
-        <div>
-            <input type="radio" id="less" value="less" formControlName="operator">
-            <label for="less">Меньше</label>
-        </div>
-        <div>
-            <input type="radio" id="bigger" value="bigger" formControlName="operator">
-            <label for="bigger">Больше</label>
+        </select>
+        <div class="operators">
+            <div class="operator">
+                <input type="radio" id="equal" value="equal" checked formControlName="operator">
+                <label for="equal">Равно</label>
+            </div>
+            <div class="operator">
+                <input type="radio" id="less" value="less" formControlName="operator">
+                <label for="less">Меньше</label>
+            </div>
+            <div class="operator">
+                <input type="radio" id="bigger" value="bigger" formControlName="operator">
+                <label for="bigger">Больше</label>
+            </div>
         </div>
     </div>
-    <div>
+    <div class="value">
         <label for="value">Значение</label>
         <input type="text" id="Значение"  formControlName="value">
     </div>
@@ -36,11 +39,11 @@
                 @for (key of columnKeys(); track key) {
                     <th>
                         @if (key === 'password') {
-                            <span>
+                            <span class="column">
                                 {{ config()[key].label }}
                             </span>
                         } @else {
-                            <button (click)="sortTable(key)">
+                            <button (click)="sortTable(key)" class="column">
                                 {{ config()[key].label }}
                             </button>
                         }
@@ -52,7 +55,7 @@
         @for (group of formArray.controls; track group; let i = $index) {
             <tr [formGroupName]="i">
                 @for (key of columnKeys(); track key) {
-                    <td>
+                    <td  class="row">
                         @let col = config()[key];
                         
                         @if(col.type === 'id' || col.type === 'uuid') {

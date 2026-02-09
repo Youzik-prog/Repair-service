@@ -20,6 +20,7 @@
 .navbar .item {
     height: 20px;
     padding: 20px 15px;
+    text-align: center;
     border-radius: var(--small-radius);
     font-weight: bold;
     cursor: pointer;
@@ -29,9 +30,13 @@
 
 .navbar .item:hover {
     transform: scale(1.05);
-    background-color: var(--grey-bg);
+    /* background-color: var(--grey-bg); */
+    border: 2px solid var(--primary);
 }
 
-.navbar .item a {
-    text-align: center;
+.navbar .item-active {
+    background-color: var(--surface);
+    border: 2px solid var(--primary);
+    /* color: white; */
+    box-shadow: 5px 5px 10px var(--shadow);
 }
