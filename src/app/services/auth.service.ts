@@ -67,7 +67,7 @@ export class AuthService {
   }
 
   async isAuthenticated(): Promise<boolean> {
-    const { data } = await this.supabase.client.auth.getSession();
-    return !!data.session;
+    const { data: {session} } = await this.supabase.client.auth.getSession();
+    return !!session;
   }
 }

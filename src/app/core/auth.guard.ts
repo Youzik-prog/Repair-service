@@ -6,6 +6,12 @@ export const authGuard =  async() => {
     const authService = inject(AuthService);
     const router = inject(Router);
 
+    const isAuth = await authService.isAuthenticated();
+
+    if(isAuth){
+      return true;
+    }
+
     if(await authService.isAuthenticated()){
       return true;
     }
@@ -17,7 +23,9 @@ export const guestGuard = async () => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (await authService.isAuthenticated()) {
+  const isAuth = await authService.isAuthenticated();
+
+  if (isAuth) {
     return router.parseUrl('/home');
   }
 

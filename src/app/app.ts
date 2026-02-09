@@ -33,4 +33,9 @@ export class App {
 
   constructor(private supabaseService: SupabaseService, public someService: UsersService) {
   }
+
+  async logout() {
+    await this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 }

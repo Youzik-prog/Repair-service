@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { USERS_CONFIG } from '../../core/columnsConfigs';
 import { AuthService } from '../../services/auth.service';
 import { showErrorMessage } from '../../core/utils';
-import { RouterLink } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -14,6 +14,8 @@ import { RouterLink } from "@angular/router";
 export class LoginComponent {
 
   private authService = inject(AuthService);
+
+  private router = inject(Router);
 
   private loginPattern = /^(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+|^\+\d+)$/;
 
@@ -39,6 +41,8 @@ export class LoginComponent {
       await this.authService.login(login!, password!);
 
       console.log("Успешный логин!");
+
+      this.router.navigate(['/home']);
     } catch(error) {
       showErrorMessage(error)
     }

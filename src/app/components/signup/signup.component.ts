@@ -4,6 +4,7 @@ import { USERS_CONFIG } from '../../core/columnsConfigs';
 import { ColumnNames, User, UserType } from '../../core/types';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { showErrorMessage } from '../../core/utils';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -14,6 +15,7 @@ import { showErrorMessage } from '../../core/utils';
 export class SignupComponent {
   
   userService = inject(UsersService);
+  router = inject(Router);
 
   config = USERS_CONFIG;
 
@@ -48,6 +50,10 @@ export class SignupComponent {
     if(this.form.valid) {
       try {
         await this.userService.createRecord({...user} as User);
+
+        console.log("Регистрация успешна!");
+
+        await this.router.navigate(['/home']);
       } catch(error) {
         showErrorMessage(error);
       }
