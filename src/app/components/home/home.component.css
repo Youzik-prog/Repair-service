@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=WDXL+Lubrifont+JP+N&display=swap');
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    gap: 3vw;
+    padding-right: var(--main-padding);
+}
+
+.our-company {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    align-items: center;
+    
+}
+
+.stats-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 3rem;
+    width: 100%;
+    height: fit-content;
+}
+
+.slogan {
+    width: fit-content;
+    font-size: calc(3vw + 0.75rem);
+    letter-spacing: 4px;
+    padding: var(--global-padding);
+    border-radius: var(--big-radius) var(--small-radius);
+    font-family: "WDXL Lubrifont JP N", sans-serif;
+    background-color: var(--primary);
+    color: white;
+    cursor:wait;
+    cursor:help !important;
+    transition: var(--transition);
+}
+
+.slogan:hover {
+    transform: rotate3d(-1, 1, 0, 30deg);
+    font-family:'Times New Roman', Times, serif;
+    font-style: bold italic;
+    text-shadow: 10px 5px 10px rgb(255, 0, 0), 0px 0px 1px white;
+}
+
+.repair-animation {
+    position: relative;
+    height: 25vw;
+    width: 30vw;
+}
+
+@keyframes rotate-gear {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.gear {
+    position: absolute;
+    width: calc(15vw + 50px);
+    animation: rotate-gear 10s linear infinite;
+}
+
+@keyframes screw-spanner {
+    from {
+        transform: rotateY(180deg) rotateZ(0deg);
+    }
+    to {
+        transform: rotateY(180deg) rotateZ(40deg);
+    }
+}
+
+.spanner {
+    position: absolute;
+    width: calc(10vw + 50px);
+    transform-origin: right;
+    transform: rotateY(180deg);
+    top: 10vw;
+    left: -2vw;
+    animation: screw-spanner 1s infinite alternate ease-in-out ;
+}
+
+@media (max-width: 500px) {
+
+    .container {
+        flex-wrap: wrap;
+    }
+
+    .repair-animation {
+        display: none;
+    }   
+}

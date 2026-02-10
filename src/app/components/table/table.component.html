@@ -42,9 +42,11 @@
                     @for (key of columnKeys(); track key) {
                         <th>
                             @if (key === 'password') {
-                                <span class="column">
-                                    {{ config()[key].label }}
-                                </span>
+                                <div class="column">
+                                    <div style="text-align: center; width: 100%;">
+                                        {{ config()[key].label }}
+                                    </div>
+                                </div>
                             } @else {
                                 <button (click)="sortTable(key)" class="column">
                                     <p>

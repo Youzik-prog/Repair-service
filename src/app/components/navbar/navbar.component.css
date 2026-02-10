@@ -3,7 +3,7 @@
     justify-content: flex-start;
     align-items: center;
     gap: 5vw;
-    padding: 5px var(--global-padding);
+    padding: 5px var(--main-padding);
     overflow-x: scroll;
     height: 5rem;
     border-bottom: 2px solid;

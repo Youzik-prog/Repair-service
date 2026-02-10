@@ -1,0 +1,57 @@
+.container {
+    width: 20vw;
+}
+
+.content {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-name-container {
+    font-size: calc(0.5vw + 0.5rem);
+}
+
+.stat {
+    font-size: calc(3vw + 1rem);
+    color: var(--primary);
+}
+
+.green {
+    border: 2px solid var(--green-primary);
+}
+
+.green .form-name-container {
+    background-color: var(--green-primary);
+    outline: 1px solid var(--green-primary);
+}
+
+.green .stat {
+    color: var(--green-primary);
+}
+
+.red {
+    border: 2px solid var(--error-primary);
+}
+
+.red .form-name-container {
+    background-color: var(--error-primary);
+    outline: 1px solid var(--error-primary);
+}
+
+.red .stat {
+    color: var(--error-primary);
+}
+
+.orange {
+    border: 2px solid var(--orange-primary);
+}
+
+.orange .form-name-container {
+    background-color: var(--orange-primary);
+    outline: 1px solid var(--orange-primary);
+}
+
+.orange .stat {
+    color: var(--orange-primary);
+}

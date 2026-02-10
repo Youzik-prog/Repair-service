@@ -5,9 +5,11 @@
   --primary-trans: #4483f7c9;
   --error-primary: #f74444;
   --green-primary: rgb(37, 136, 37);
+  --orange-primary: #f7a144;
   --surface: #e6efff;
   --error-surface: #ffe6e6;
   --green-surface: #e9ffe6;
+  --orange-surface: #fff8e6;
   --border-gray: gray;
   --on-surface: rgb(33, 31, 40);
   --bg: #fbfcff;
@@ -209,8 +211,8 @@ input[type="radio"]:focus {
   align-items: center;
   justify-content: center;
   position: fixed;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 3rem;
+  height: 3rem;
   bottom: 5vh;
   right: 5vw;
   border: 2px solid var(--primary);

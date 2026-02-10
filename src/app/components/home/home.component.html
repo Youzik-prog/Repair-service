@@ -1,1 +1,17 @@
-<p>home.component works!</p>
+<div class="container">
+    <div class="our-company">
+        <h1 class="slogan">ЧекСервис<br>Мы ремонтируем всё!<br>(почти)</h1>
+        <div class="repair-animation">
+            <img src="/assets/gear.svg" alt="gear" class="gear">
+            <img src="/assets/spanner.svg" alt="spanner" class="spanner">
+        </div>
+    </div>
+    
+    <div class="stats-cards">
+        <app-stats-card [statName]="'Всего заработали'" [value]="allOrdersMoney()" [color]="'green'"></app-stats-card>
+        <app-stats-card [statName]="'Успешно провели ремонтов'" [value]="repairsAmount()"></app-stats-card>
+        <app-stats-card [statName]="'Затратили на детали'" [value]="allDetailsCost()" [color]="'orange'"></app-stats-card>
+        <app-stats-card [statName]="'Незавершённых заказов'" [value]="allUnfinishedOrders()" [color]="'red'"></app-stats-card>
+    </div>
+
+</div>
